@@ -20,8 +20,17 @@ class LoginController extends GetxController {
   final Rx<String> token = "".obs;
   final RxBool loading = false.obs;
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  late TextEditingController usernameController, passwordController;
+
+  String email = '';
+  String password = '';
+  @override
+  void onInit() {
+    super.onInit();
+    usernameController = TextEditingController();
+    passwordController = TextEditingController();
+  }
 
   Future setPrefs() async {
     final ctrl = Get.find<SessionController>();
@@ -114,18 +123,45 @@ class LoginController extends GetxController {
     }
   }
 
-  /*
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   @override
   void onReady() {
     super.onReady();
   }
 
   @override
-  void onClose() {}
-  */
+  void onClose() {
+    usernameController.dispose();
+    passwordController.dispose();
+  }
+
+  String? validateEmail(String value) {
+    if (!GetUtils.isEmail(value)) {
+      return 'Email incorrecto';
+    }
+    return null;
+  }
+
+  String? validatePassword(String value) {
+    const String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    final regex = RegExp(pattern);
+    if (value.isEmpty) {
+      return 'Ingresar contraseña';
+    } else {
+      if (!regex.hasMatch(value)) {
+        return 'La contraseña debe tener al menos 8 caracteres y al menos una letra mayúscula, una letra minúscula, un número y un caracter especial';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  bool checkLogin() {
+    final isValid = loginFormKey.currentState!.validate();
+    if (!isValid) {
+      return false;
+    }
+    loginFormKey.currentState!.save();
+    return true;
+  }
 }

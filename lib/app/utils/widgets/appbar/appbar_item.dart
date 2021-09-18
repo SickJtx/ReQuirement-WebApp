@@ -25,9 +25,8 @@ class AppBarItem extends GetView<NavbarController> {
               ? controller.hovers[index!] = true
               : controller.hovers[index!] = false;
         },
-        onTap: () {
-          controller.changePage(index!);
-         
+        onTap: () async {
+          await controller.changePage(index!);
         },
         hoverColor: Colors.transparent,
         child: Column(
@@ -36,7 +35,7 @@ class AppBarItem extends GetView<NavbarController> {
             const SizedBox(height: 10),
             Text(
               title!,
-              style: GoogleFonts.roboto(
+              style: GoogleFonts.montserrat(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: controller.hovers[index!]
