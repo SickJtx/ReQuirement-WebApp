@@ -7,16 +7,21 @@ environment:
 
 dependencies: 
   cupertino_icons: ^1.0.2
-  get: 4.3.4
-  google_fonts: ^2.1.0
-  stack: ^0.2.1
-  intl: ^0.17.0
+  dio: ^4.0.0
   flutter: 
     sdk: flutter
+  get: 4.3.4
+  google_fonts: ^2.1.0
+  intl: ^0.17.0
+  loading_indicator: ^3.0.1
+  logger: ^1.1.0
+  shared_preferences: ^2.0.7
+  stack: ^0.2.1
 
 dev_dependencies: 
   flutter_test: 
     sdk: flutter
+  lint: ^1.0.0
 
 flutter: 
   uses-material-design: true

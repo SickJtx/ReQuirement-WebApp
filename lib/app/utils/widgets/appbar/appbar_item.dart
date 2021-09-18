@@ -27,13 +27,13 @@ class AppBarItem extends GetView<NavbarController> {
         },
         onTap: () {
           controller.changePage(index!);
-          Get.toNamed(route!);
+         
         },
         hoverColor: Colors.transparent,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               title!,
               style: GoogleFonts.roboto(
@@ -46,7 +46,7 @@ class AppBarItem extends GetView<NavbarController> {
                         : disable,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             TextDot(visible: controller.hovers[index!]),

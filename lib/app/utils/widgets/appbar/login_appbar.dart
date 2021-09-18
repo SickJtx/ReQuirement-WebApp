@@ -11,14 +11,14 @@ class LoginAppBar extends GetView<NavbarController> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
           width: screenSize.width / 8,
         ),
-        AppBarItem(
+        const AppBarItem(
           index: 0,
           route: '/signin',
           title: "Crear Cuenta",
@@ -26,7 +26,7 @@ class LoginAppBar extends GetView<NavbarController> {
         SizedBox(
           width: screenSize.width / 20,
         ),
-        AppBarItem(
+        const AppBarItem(
           index: 1,
           route: '/login',
           title: "Iniciar Sesión",

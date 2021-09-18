@@ -8,7 +8,7 @@ import '../controllers/team_controller.dart';
 class TeamView extends GetView<TeamController> {
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -16,7 +16,7 @@ class TeamView extends GetView<TeamController> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size(screenSize.width, 1000),
-          child: DesktopNavbar(),
+          child: const DesktopNavbar(),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -26,10 +26,12 @@ class TeamView extends GetView<TeamController> {
                   constraints: BoxConstraints(
                       minHeight: screenSize.height * 8.5 / 10,
                       minWidth: screenSize.width * 9 / 10),
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
                   color: Colors.white,
                   child: Column(
-                    children: [],
+                    children: [
+                      
+                    ],
                   ),
                 ),
               ],

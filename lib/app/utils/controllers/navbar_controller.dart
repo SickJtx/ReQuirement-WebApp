@@ -1,17 +1,25 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:stack/stack.dart' as stk;
 
 class NavbarController extends GetxController {
-  final hovers = [false, false, false, false, false, false].obs;
-  final viewFlags = [false, true, true, false, false, false].obs;
+  final hovers = [false, false, false, false, false].obs;
+  final viewFlags = [false, true, true, false, false].obs;
 
   final stk.Stack<int> pila = stk.Stack();
 
+  final initiated = false.obs;
+
   final currentIndex = 1.obs;
   final previousIndex = 0.obs;
-  final onSesion = false.obs;
 
+  final onSesion = false.obs;
+  final List<String> routes = [
+    '/signin',
+    '/login',
+    '/home',
+    '/projects',
+    '/profile',
+  ];
   void changePage(int index) {
     if (!viewFlags[index]) {
       viewFlags[currentIndex.value] = false;
@@ -19,27 +27,27 @@ class NavbarController extends GetxController {
       currentIndex.value = index;
       viewFlags[index] = true;
     }
+    Get.toNamed(routes[index]);
   }
-
-
 
   void startSesion() {
     viewFlags[currentIndex.value] = false;
-
     currentIndex.value = 2;
     onSesion.value = true;
+    Get.toNamed("/home");
+    Get.toNamed("/home");
   }
 
   @override
   void onInit() {
     super.onInit();
   }
-
+/*
   @override
   void onReady() {
     super.onReady();
   }
 
   @override
-  void onClose() {}
+  void onClose() {}*/
 }

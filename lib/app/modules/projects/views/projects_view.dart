@@ -1,11 +1,14 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/routes/default_transitions.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
+import 'package:re_quirement/app/modules/projects/views/widgets/step1_view.dart';
+import 'package:re_quirement/app/modules/projects/views/widgets/step2_view.dart';
+import 'package:re_quirement/app/utils/constants/styles.dart';
+
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 
 import '../controllers/projects_controller.dart';
@@ -13,8 +16,8 @@ import '../controllers/projects_controller.dart';
 class ProjectsView extends GetView<ProjectsController> {
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    var df = DateFormat('dd-MM-yyyy');
+    final screenSize = MediaQuery.of(context).size;
+    final df = DateFormat('dd-MM-yyyy');
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -22,236 +25,325 @@ class ProjectsView extends GetView<ProjectsController> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size(screenSize.width, 1000),
-          child: DesktopNavbar(),
+          child: const DesktopNavbar(),
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Container(
-                  width: screenSize.width * 9 / 10,
-                  constraints: BoxConstraints(
-                    minHeight: screenSize.height * 8.5 / 10,
+        body: Obx(
+          () => controller.loading.value
+              ? Center(
+                  child: SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: LoadingIndicator(
+                      colors: [Colors.deepOrange.shade500],
+                      indicatorType: Indicator.ballClipRotateMultiple,
+                    ),
                   ),
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          children: [
-                            Text(
-                              "MIS PROYECTOS",
-                              style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                child: Container(),
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                controller.projects.add(
-                                  AgileProject(
-                                    titulo: "titulo",
-                                    tipo: "tipo",
-                                    fecha: DateTime.now(),
-                                    cantidad: 5,
-                                    visibilidad: true,
-                                  ),
-                                );
-                                controller.listKey.currentState!.insertItem(
-                                  0,
-                                  duration: Duration(seconds: 1),
-                                );
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.green),
-                              ),
-                              child: Text(
-                                "Nuevo proyecto",
-                                style: GoogleFonts.roboto(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Proyecto",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Creación",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Tipo de Mercado",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Visibilidad",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "#Requisitos",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                "Acciones",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(
-                          height: 5,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Obx(
-                        () => Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          height: 500,
-                          child: AnimatedList(
-                            key: controller.listKey,
-                            initialItemCount: controller.projects.length,
-                            itemBuilder: (context, index, animation) {
-                              int i = controller.projects.length - 1 - index;
-                              return SizeTransition(
-                                sizeFactor: animation,
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    color: Colors.red,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            controller.projects[i].titulo!,
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            "${df.format(controller.projects[i].fecha!)}",
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            controller.projects[i].tipo!,
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            controller.projects[i].visibilidad
-                                                    .value
-                                                ? "Público"
-                                                : "Privado",
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            "${controller.projects[i].cantidad!}",
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                            "$i",
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                )
+              : SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          width: screenSize.width * 9 / 10,
+                          constraints: BoxConstraints(
+                            minHeight: screenSize.height * 8.5 / 10,
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "MIS PROYECTOS",
+                                      style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
+                                    Expanded(
+                                      child: Align(
+                                        child: Container(),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Get.defaultDialog(
+                                          title: "Nuevo proyecto",
+                                          titleStyle: GoogleFonts.roboto(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                          barrierDismissible: false,
+                                          content: Obx(
+                                            () => AnimatedSwitcher(
+                                              switchInCurve: Curves.slowMiddle,
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              child: controller.step.value == 1
+                                                  ? const Step1()
+                                                  : const Step2(),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.green),
+                                      ),
+                                      child: Text(
+                                        "Nuevo proyecto",
+                                        style: GoogleFonts.roboto(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "Proyecto",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "Creación",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "Tipo de Mercado",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "Visibilidad",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "#Requisitos",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        "Acciones",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: const Divider(
+                                  height: 5,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Obx(
+                                () => Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  height: 500,
+                                  child: AnimatedList(
+                                    key: controller.listKey,
+                                    initialItemCount:
+                                        controller.projects.length,
+                                    itemBuilder: (context, index, animation) {
+                                      final map = controller.projects[index];
+                                      return SizeTransition(
+                                        sizeFactor: animation,
+                                        child: InkWell(
+                                          onTap: () async{
+                                            Get.toNamed(
+                                                "/projects/my-project-details");
+                                            await Get.find<
+                                                    MyProjectDetailsController>()
+                                                .getProjectInfo(
+                                                    pid: map["id"].toString());
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 20),
+                                            //olor: Colors.red,
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    map["projectName"]
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.roboto(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    df.format(DateTime.parse(
+                                                        map["createdAt"]
+                                                            .toString())),
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.roboto(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    map["marketType"]
+                                                            ["marketTypeName"]
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.roboto(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    map["visibility"]
+                                                                .toString() ==
+                                                            "PUBLIC"
+                                                        ? "Público"
+                                                        : "Privado",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.roboto(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    "0",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.roboto(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      const Expanded(
+                                                        flex: 2,
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                      OutlinedButton(
+                                                        onPressed: () {
+                                                          Get.toNamed(
+                                                              "/projects/my-project-details");
+                                                        },
+                                                        style: OutlinedButton
+                                                            .styleFrom(
+                                                          primary: active,
+                                                          side:
+                                                              const BorderSide(
+                                                            color: active,
+                                                          ),
+                                                        ),
+                                                        child:
+                                                            const Text("Ver"),
+                                                      ),
+                                                      const Expanded(
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {},
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(active),
+                                                        ),
+                                                        child: const Text(
+                                                            "Clonar"),
+                                                      ),
+                                                      const Expanded(
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {},
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(Colors
+                                                                      .red),
+                                                        ),
+                                                        child: const Text(
+                                                            "Eliminar"),
+                                                      ),
+                                                      const Expanded(
+                                                        flex: 2,
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
-                              );
-                            },
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
         ),
       ),
     );

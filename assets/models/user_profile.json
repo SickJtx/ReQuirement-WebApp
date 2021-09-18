@@ -1,0 +1,11 @@
+{
+    "firstName": "string",
+    "lastName": "string",
+    "email": "string",
+    "password": "string",
+    "primaryAddress": "",
+    "secundaryAddress": "",
+    "locationCode": "es-pe",
+    "locationDescription": "Spanish (Peru)",
+    "suscribed": false
+}

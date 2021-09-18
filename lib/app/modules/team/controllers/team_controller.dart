@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 class TeamController extends GetxController {
   //TODO: Implement TeamController
 
-  final count = 0.obs;
-  @override
+  /*
   void onInit() {
     super.onInit();
   }
@@ -16,5 +15,5 @@ class TeamController extends GetxController {
 
   @override
   void onClose() {}
-  void increment() => count.value++;
+  */
 }
