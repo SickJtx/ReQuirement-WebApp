@@ -20,7 +20,7 @@ class NavbarController extends GetxController {
     '/projects',
     '/profile',
   ];
-  void changePage(int index) {
+  Future<void> changePage(int index) async {
     if (!viewFlags[index]) {
       viewFlags[currentIndex.value] = false;
       pila.push(currentIndex.value);
@@ -28,6 +28,8 @@ class NavbarController extends GetxController {
       viewFlags[index] = true;
     }
     Get.toNamed(routes[index]);
+    //Get.offAllNamed(routes[index]);
+    //Get.offNamed(routes[index]);
   }
 
   void startSesion() {

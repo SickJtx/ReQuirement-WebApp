@@ -20,15 +20,18 @@ class DesktopNavbar extends GetView<NavbarController> {
       child: Container(
         constraints: const BoxConstraints(minHeight: 50),
         height: screenSize.height / 12,
-        color: Colors.black.withAlpha(200),
         //padding: EdgeInsets.all(screenSize.height / 50),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(width: 20),
             Text(
-              "Re-Quirement",
-              style: GoogleFonts.tradeWinds(fontSize: 20, color: Colors.white),
+              'ReQuirement',
+              style: GoogleFonts.montserrat(
+                color: Colors.black87,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Obx(
               () => Expanded(

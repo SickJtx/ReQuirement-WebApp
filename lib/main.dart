@@ -8,9 +8,12 @@ import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 
 import 'app/modules/home/controllers/home_controller.dart';
 import 'app/routes/app_pages.dart';
+import 'app/utils/constants/styles.dart';
 import 'app/utils/controllers/navbar_controller.dart';
 
 void main() {
+  final ThemeData theme = ThemeData(fontFamily: 'Montserrat');
+
   Get.put(SessionController());
   Get.put(NavbarController());
   Get.put(LoginController());
@@ -21,9 +24,14 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.fadeIn,
       debugShowCheckedModeBanner: false,
-      title: "Application",
+      title: "ReQuirement",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(
+          primary: active,
+        ),
+      ),
     ),
   );
 }
