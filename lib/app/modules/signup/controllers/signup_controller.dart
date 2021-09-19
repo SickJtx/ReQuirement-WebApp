@@ -15,6 +15,17 @@ class SignUpController extends GetxController {
   TextEditingController secundaryAddressController = TextEditingController();
 
   final RxBool loading = false.obs;
+
+  GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
+
+  String firstName = '';
+  String lastName = '';
+  String username = '';
+  String password = '';
+  String repeatPassword = '';
+  String primaryAddress = '';
+  String secondaryAddress = '';
+
   final logger = Logger(
     printer: PrettyPrinter(),
   );
@@ -45,6 +56,58 @@ class SignUpController extends GetxController {
     }
 
     loading.value = false;
+  }
+
+  String? validateEmail(String value) {
+    if (!GetUtils.isEmail(value)) {
+      return 'Email incorrecto';
+    }
+    return null;
+  }
+
+  String? validateOnlyLetters(String value) {
+    if (!GetUtils.isAlphabetOnly(value)) {
+      return 'Solo usar caracteres alfabéticos';
+    }
+    return null;
+  }
+
+  String? validatePassword(String value) {
+    const String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    final regex = RegExp(pattern);
+    if (value.isEmpty) {
+      return 'Ingresar contraseña';
+    } else {
+      if (!regex.hasMatch(value)) {
+        return 'La contraseña debe tener al menos 8 caracteres y al menos una letra mayúscula, una letra minúscula, un número y un caracter especial';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  String? validateAdress(String value) {
+    if (value.length <= 0) {
+      return 'La dirección no puede estar vacía';
+    }
+    return null;
+  }
+
+  String? validateRetypePassword(String value) {
+    if (value != this.passwordController.text) {
+      return 'Las contraseñas no coinciden';
+    }
+    return null;
+  }
+
+  bool checkSignup() {
+    final isValid = signupFormKey.currentState!.validate();
+    if (!isValid) {
+      return false;
+    }
+    signupFormKey.currentState!.save();
+    return true;
   }
 
   @override
