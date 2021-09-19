@@ -40,6 +40,11 @@ class ProjectsController extends GetxController {
   final RxBool loading = false.obs;
   final mkid = "0".obs;
 
+  GlobalKey<FormState> projectsStep1FormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> projectsStep2FormKey = GlobalKey<FormState>();
+  String projectName = '';
+  String tagName = '';
+
   final logger = Logger(
     printer: PrettyPrinter(),
   );
@@ -136,6 +141,38 @@ class ProjectsController extends GetxController {
       loading.value = false;
       logger.e(e);
     }
+  }
+
+  String? validateProjectName(String value) {
+    if (value.length <= 0) {
+      return 'El nombre del proyecto no puede estar vacío';
+    }
+    return null;
+  }
+
+  String? validateTagName(String value) {
+    if (value.length <= 0) {
+      return 'El nombre del tag no puede estar vacío';
+    }
+    return null;
+  }
+
+  bool validStep1() {
+    final isValid = projectsStep1FormKey.currentState!.validate();
+    if (!isValid) {
+      return false;
+    }
+    projectsStep1FormKey.currentState!.save();
+    return true;
+  }
+
+  bool validTag() {
+    final isValid = projectsStep2FormKey.currentState!.validate();
+    if (!isValid) {
+      return false;
+    }
+    projectsStep2FormKey.currentState!.save();
+    return true;
   }
   /*
   @override
