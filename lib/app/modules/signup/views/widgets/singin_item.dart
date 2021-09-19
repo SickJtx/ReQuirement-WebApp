@@ -40,7 +40,7 @@ class SigninItem extends StatelessWidget {
             child: Container(
               width: screenSize.width * 4 / 14,
               padding: const EdgeInsets.only(left: 8),
-              child: TextField(
+              child: TextFormField(
                 controller: textController,
                 obscureText: obscure,
                 decoration: const InputDecoration(border: InputBorder.none),

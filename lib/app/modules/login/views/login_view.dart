@@ -7,7 +7,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:re_quirement/app/utils/constants/styles.dart';
 
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
-import 'package:re_quirement/app/utils/widgets/custom_text_field.dart';
+import 'package:re_quirement/app/utils/widgets/custom_form_field.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -84,9 +84,9 @@ class LoginView extends GetView<LoginController> {
                                     icon: Icons.email_outlined,
                                     hintText: 'Ingresa tu correo',
                                     labelText: 'Correo',
-                                    inputValue: controller.email,
+                                    inputValue: controller.username,
                                     inputSetter: (String value) {
-                                      controller.email = value;
+                                      controller.username = value;
                                     },
                                   ),
                                   const SizedBox(

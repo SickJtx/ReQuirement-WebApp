@@ -23,7 +23,7 @@ class LoginController extends GetxController {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   late TextEditingController usernameController, passwordController;
 
-  String email = '';
+  String username = '';
   String password = '';
   @override
   void onInit() {
