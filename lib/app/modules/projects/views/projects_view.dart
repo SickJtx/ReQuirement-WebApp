@@ -6,12 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
 import 'package:re_quirement/app/modules/projects/views/widgets/step1_view.dart';
-import 'package:re_quirement/app/modules/projects/views/widgets/step2_view.dart';
+import 'package:re_quirement/app/modules/projects/views/widgets/step3_view.dart';
 import 'package:re_quirement/app/utils/constants/styles.dart';
 
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 
 import '../controllers/projects_controller.dart';
+import 'widgets/step2_view.dart';
 
 class ProjectsView extends GetView<ProjectsController> {
   @override
@@ -82,7 +83,9 @@ class ProjectsView extends GetView<ProjectsController> {
                                                   milliseconds: 500),
                                               child: controller.step.value == 1
                                                   ? const Step1()
-                                                  : const Step2(),
+                                                  : controller.step.value == 2
+                                                      ? const Step2()
+                                                      : const Step3(),
                                             ),
                                           ),
                                         );
@@ -186,7 +189,7 @@ class ProjectsView extends GetView<ProjectsController> {
                                       return SizeTransition(
                                         sizeFactor: animation,
                                         child: InkWell(
-                                          onTap: () async{
+                                          onTap: () async {
                                             Get.toNamed(
                                                 "/projects/my-project-details");
                                             await Get.find<
@@ -273,9 +276,14 @@ class ProjectsView extends GetView<ProjectsController> {
                                                         ),
                                                       ),
                                                       OutlinedButton(
-                                                        onPressed: () {
+                                                        onPressed: () async {
                                                           Get.toNamed(
                                                               "/projects/my-project-details");
+                                                          await Get.find<
+                                                                  MyProjectDetailsController>()
+                                                              .getProjectInfo(
+                                                                  pid: map["id"]
+                                                                      .toString());
                                                         },
                                                         style: OutlinedButton
                                                             .styleFrom(

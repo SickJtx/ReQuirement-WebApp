@@ -22,23 +22,26 @@ class Requirement {
 
 class MyProjectDetailsController extends GetxController {
   //TODO: Implement MyProjectDetailsController
-  final tags = ["Uso libre", "Proyecto libre"].obs;
   final editor = false.obs;
   final RxBool loading = true.obs;
   final logger = Logger(
     printer: PrettyPrinter(),
   );
-  dynamic map = {};
+  final RxList<dynamic> projectInfo = [].obs;
+  final RxList<Requirement> requirements = <Requirement>[].obs;
 
   Future getProjectInfo({required String pid}) async {
+    projectInfo.value.clear();
     final ctrl = Get.find<SessionController>();
     dio.Response response;
     try {
       response = await ProjectDetailsProvider()
           .getProjetDetails(token: ctrl.token.value, pid: pid);
+
       if (response.statusCode == 200) {
         logger.i(response.data);
-        map = response.data;
+        projectInfo.value.add(response.data);
+        loadRequirements();
       } else {
         logger.i(response.statusCode);
         Get.back();
@@ -50,40 +53,22 @@ class MyProjectDetailsController extends GetxController {
     }
   }
 
-  final requirements = [
-    Requirement(
-      codigo: "RF01",
-      detalles:
-          "Como usuario quiero iniciar sesión en el sistema para utilizar los servicios de reutilziación",
-      fecha: DateTime.now(),
-      prioridad: "Alta",
-      puntos: 3,
-    ),
-    Requirement(
-      codigo: "RF02",
-      detalles:
-          "Como usuario quiero crearme una cuenta en el sistema para utilizar los servicios de reutilziación",
-      fecha: DateTime.now(),
-      prioridad: "Alta",
-      puntos: 3,
-    ),
-    Requirement(
-      codigo: "RF03",
-      detalles:
-          "Como usuario quiero crearme una cuenta en el sistema para utilizar los servicios de reutilziación",
-      fecha: DateTime.now(),
-      prioridad: "Alta",
-      puntos: 3,
-    ),
-    Requirement(
-      codigo: "RF04",
-      detalles:
-          "Como usuario quiero crearme una cuenta en el sistema para utilizar los servicios de reutilziación",
-      fecha: DateTime.now(),
-      prioridad: "Alta",
-      puntos: 3,
-    )
-  ].obs;
+  void loadRequirements() {
+    requirements.value.clear();
+    final List<dynamic> list =
+        projectInfo[0]["productBacklogs"][0]["requirements"] as List;
+    for (int i = 0; i < list.length; i++) {
+      requirements.value.add(
+        Requirement(
+          codigo: (i > 9) ? "RF$i" : "RF0$i",
+          detalles: list[i]["systemDescription"].toString(),
+          fecha: DateTime.now(),
+          prioridad: "Alta",
+          puntos: 3,
+        ),
+      );
+    }
+  }
 
   /*
   @override

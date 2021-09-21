@@ -20,7 +20,8 @@ class LoginController extends GetxController {
   final Rx<String> token = "".obs;
   final RxBool loading = false.obs;
 
-  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> loginFormKey = new GlobalKey<FormState>();
+
   late TextEditingController usernameController, passwordController;
 
   String username = '';
@@ -63,6 +64,7 @@ class LoginController extends GetxController {
         await Get.find<HomeController>().getProjects();
         await Get.find<ProjectsController>().getProjects();
         await Get.find<ProjectsController>().getMarketTypes();
+        await Get.find<ProjectsController>().getAvaiableMarketTypes();
         final ctrl = Get.find<NavbarController>();
         ctrl.startSesion();
 

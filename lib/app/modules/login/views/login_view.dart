@@ -93,6 +93,7 @@ class LoginView extends GetView<LoginController> {
                                     height: 30,
                                   ),
                                   CustomFormField(
+                                    obscure: true,
                                     controller: controller.passwordController,
                                     inputValidation:
                                         controller.validatePassword,

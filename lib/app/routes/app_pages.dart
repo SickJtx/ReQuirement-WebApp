@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import 'package:re_quirement/app/modules/generate_project/bindings/generate_project_binding.dart';
+import 'package:re_quirement/app/modules/generate_project/views/generate_project_view.dart';
 import 'package:re_quirement/app/modules/home/bindings/home_binding.dart';
 import 'package:re_quirement/app/modules/home/views/home_view.dart';
 import 'package:re_quirement/app/modules/login/bindings/login_binding.dart';
@@ -50,15 +52,21 @@ class AppPages {
       binding: ProfileBinding(),
     ),
     GetPage(
-        name: _Paths.PROJECTS,
-        page: () => ProjectsView(),
-        binding: ProjectsBinding(),
-        children: [
-          GetPage(
-            name: _Paths.MY_PROJECT_DETAILS,
-            page: () => MyProjectDetailsView(),
-            binding: MyProjectDetailsBinding(),
-          ),
-        ]),
+      name: _Paths.PROJECTS,
+      page: () => ProjectsView(),
+      binding: ProjectsBinding(),
+      children: [
+        GetPage(
+          name: _Paths.MY_PROJECT_DETAILS,
+          page: () => MyProjectDetailsView(),
+          binding: MyProjectDetailsBinding(),
+        ),
+        GetPage(
+          name: _Paths.GENERATE_PROJECT,
+          page: () => GenerateProjectView(),
+          binding: GenerateProjectBinding(),
+        ),
+      ],
+    ),
   ];
 }

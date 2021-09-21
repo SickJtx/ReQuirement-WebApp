@@ -35,13 +35,25 @@ class ProjectsController extends GetxController {
   final visibilidadProyecto = "Público".obs;
 
   final RxList<dynamic> tags = [].obs;
+  final RxList<dynamic> productBacklog = [].obs;
+
   final RxList<dynamic> projects = [].obs;
   final RxList<dynamic> marketType = [].obs;
+  final RxList<dynamic> avaiableMarketType = [].obs;
+
+  final RxList<RxBool> isSelected = <RxBool>[].obs;
+  final RxList<int> selectedRequirements = <int>[].obs;
+  final RxList<dynamic> generatedRequirements = [].obs;
+
   final RxBool loading = false.obs;
-  final mkid = "0".obs;
+  final RxBool generatorLoading = true.obs;
+  final mkid = 0.obs;
 
   GlobalKey<FormState> projectsStep1FormKey = GlobalKey<FormState>();
   GlobalKey<FormState> projectsStep2FormKey = GlobalKey<FormState>();
+
+  final RxBool autoGenerate = false.obs;
+
   String projectName = '';
   String tagName = '';
 
@@ -59,9 +71,17 @@ class ProjectsController extends GetxController {
   void getMkid() {
     for (final dynamic mt in marketType) {
       if (mt["marketTypeName"].toString() == tipoMercado.value) {
-        mkid.value = mt["id"].toString();
+        mkid.value = mt["id"] as int;
       }
     }
+  }
+
+  List<dynamic> getSelectedRequirements() {
+    final List<dynamic> selectedRequirementList = [];
+    for (final int i in selectedRequirements) {
+      selectedRequirementList.add(generatedRequirements[i]);
+    }
+    return selectedRequirementList;
   }
 
   List<String> dropdownItems() {
@@ -69,6 +89,15 @@ class ProjectsController extends GetxController {
     list.add("Seleccionar tipo");
     for (final dynamic mt in marketType) {
       list.add(mt["marketTypeName"].toString());
+    }
+    return list;
+  }
+
+  List<String> dropdownAvaiableItems() {
+    final List<String> list = <String>[];
+    list.add("Seleccionar tipo");
+    for (final dynamic mt in avaiableMarketType) {
+      list.add(mt["marketType"]["marketTypeName"].toString());
     }
     return list;
   }
@@ -96,6 +125,29 @@ class ProjectsController extends GetxController {
     }
   }
 
+  Future generateProject() async {
+    generatedRequirements.clear();
+    generatorLoading.value = true;
+    final String token = Get.find<SessionController>().token.value;
+    dio.Response response;
+    getMkid();
+    try {
+      response = await ProjectsProvider()
+          .generateProject(token: token, mkid: mkid.value);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        generatedRequirements.value =
+            response.data["productBacklogs"][0]["requirements"] as List;
+        logger.i(response.data);
+      } else {
+        logger.i(response.statusCode);
+      }
+      generatorLoading.value = false;
+    } on Exception catch (e) {
+      generatorLoading.value = false;
+      logger.e(e);
+    }
+  }
+
   Future createProject() async {
     loading.value = true;
     final String token = Get.find<SessionController>().token.value;
@@ -103,9 +155,19 @@ class ProjectsController extends GetxController {
     getMkid();
 
     try {
-      response = await ProjectsProvider().createProject(
-          token: token, mkid: 31, tags: tags, projectName: "Test2");
       Get.back();
+      response = await ProjectsProvider().createProject(
+        token: token,
+        mkid: mkid.value,
+        tags: tags,
+        projectName: projectNameController.text,
+        productBacklogs: [
+          {
+            "productBacklogName": "Product Backlog",
+            "requirements": getSelectedRequirements()
+          }
+        ],
+      );
       if (response.statusCode == 201 || response.statusCode == 200) {
         await getProjects();
         step.value = 1;
@@ -131,7 +193,29 @@ class ProjectsController extends GetxController {
       );
       if (response.statusCode == 201 || response.statusCode == 200) {
         marketType.value = response.data as List;
-        logger.wtf(marketType);
+
+        logger.i(response.data);
+      } else {
+        logger.i(response.statusCode);
+      }
+      loading.value = false;
+    } on Exception catch (e) {
+      loading.value = false;
+      logger.e(e);
+    }
+  }
+
+  Future getAvaiableMarketTypes() async {
+    avaiableMarketType.clear();
+    loading.value = true;
+    final String token = Get.find<SessionController>().token.value;
+    dio.Response response;
+    try {
+      response = await MarketTypeProvider().getAvaliableMarketTypes(
+        token: token,
+      );
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        avaiableMarketType.value = response.data as List;
         logger.i(response.data);
       } else {
         logger.i(response.statusCode);
@@ -174,9 +258,12 @@ class ProjectsController extends GetxController {
     projectsStep2FormKey.currentState!.save();
     return true;
   }
-  /*
+
   @override
   void onInit() {
+    for (int i = 0; i < 60; i++) {
+      isSelected.value.add(false.obs);
+    }
     super.onInit();
   }
 
@@ -186,6 +273,5 @@ class ProjectsController extends GetxController {
   }
 
   @override
-  void onClose() {}*/
-
+  void onClose() {}
 }
