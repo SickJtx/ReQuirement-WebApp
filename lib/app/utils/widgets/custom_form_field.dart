@@ -4,25 +4,27 @@ import 'package:re_quirement/app/utils/constants/styles.dart';
 
 class CustomFormField extends StatefulWidget {
   final TextEditingController controller;
-  final dynamic inputValidation;
+  //final dynamic inputValidation;
+  final String? Function(String) inputValidation;
   final String inputValue;
   final IconData icon;
   final String hintText;
   final String labelText;
   final TextInputType inputType;
   final Function inputSetter;
-
-  const CustomFormField({
-    Key? key,
-    required this.controller,
-    required this.inputValidation,
-    required this.inputType,
-    required this.icon,
-    required this.hintText,
-    required this.inputValue,
-    required this.labelText,
-    required this.inputSetter,
-  }) : super(key: key);
+  final bool obscure;
+  const CustomFormField(
+      {Key? key,
+      required this.controller,
+      required this.inputValidation,
+      required this.inputType,
+      required this.icon,
+      required this.hintText,
+      required this.inputValue,
+      required this.labelText,
+      required this.inputSetter,
+      this.obscure = false})
+      : super(key: key);
   @override
   _CustomFormFieldState createState() => _CustomFormFieldState();
 }
@@ -31,6 +33,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: widget.obscure,
       keyboardType: widget.inputType,
       controller: widget.controller,
       onSaved: (value) {
@@ -38,7 +41,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
           widget.inputSetter(value!);
         });
       },
-      validator: (value) {
+      validator: (String? value) {
         return widget.inputValidation(value!);
       },
       style: const TextStyle(

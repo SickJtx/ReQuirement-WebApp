@@ -27,17 +27,16 @@ class NavbarController extends GetxController {
       currentIndex.value = index;
       viewFlags[index] = true;
     }
-    Get.toNamed(routes[index]);
-    //Get.offAllNamed(routes[index]);
-    //Get.offNamed(routes[index]);
+    Get.offAndToNamed(routes[index]);
+
   }
 
   void startSesion() {
     viewFlags[currentIndex.value] = false;
     currentIndex.value = 2;
     onSesion.value = true;
-    Get.toNamed("/home");
-    Get.toNamed("/home");
+    Get.offAndToNamed("/home");
+    Get.offAndToNamed("/home");
   }
 
   @override

@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:re_quirement/app/modules/my_project_details/views/widgets/requirement_item.dart';
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 import 'package:re_quirement/app/utils/widgets/labeled_item.dart';
 import 'package:re_quirement/app/utils/widgets/tag_item.dart';
 
-import '../controllers/my_project_details_controller.dart';
-import 'widgets/requirement_item.dart';
+import '../controllers/generate_project_controller.dart';
 
-class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
+class GenerateProjectView extends GetView<GenerateProjectController> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final map = Get.arguments;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(screenSize.width, 1000),
@@ -50,8 +51,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                               height: 20,
                             ),
                             Text(
-                              controller.projectInfo[0]["projectName"]
-                                  .toString(),
+                              map["projectName"].toString(),
                               style: GoogleFonts.roboto(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
@@ -62,9 +62,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      controller.projectInfo[0]["marketType"]
-                                              ["marketTypeName"]
-                                          .toString(),
+                                      map["marketType"].toString(),
                                     ),
                                   ),
                                 ),
@@ -73,11 +71,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      controller.projectInfo[0]["visibility"]
-                                                  .toString() ==
-                                              "PUBLIC"
-                                          ? "Público"
-                                          : "Privado",
+                                      map["visibility"].toString(),
                                     ),
                                   ),
                                 ),
@@ -95,17 +89,17 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Wrap(
-                                spacing: 10,
-                                children: (controller.projectInfo[0]["tags"]
-                                        as List<dynamic>)
-                                    .map(
-                                  (e) {
-                                    return TagItem(
-                                      tag: e["tagDescription"].toString(),
-                                    );
-                                  },
-                                ).toList(),
+                              child: Obx(
+                                () => Wrap(
+                                  spacing: 10,
+                                  children: controller.tags.map(
+                                    (e) {
+                                      return TagItem(
+                                        tag: e["tagDescription"].toString(),
+                                      );
+                                    },
+                                  ).toList(),
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -131,26 +125,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                 height: 5,
                               ),
                             ),
-                            Obx(
-                              () => controller.requirements.value.isEmpty
-                                  ? const SizedBox()
-                                  : Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Wrap(
-                                          spacing: 15,
-                                          children:
-                                              controller.requirements.value.map(
-                                            (e) {
-                                              return RequirementItem(
-                                                requirement: e,
-                                              );
-                                            },
-                                          ).toList(),
-                                        ),
-                                      ),
-                                    ),
-                            ),
+                            
                           ],
                         ),
                       ),

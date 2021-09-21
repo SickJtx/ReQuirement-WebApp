@@ -16,7 +16,7 @@ class SignUpController extends GetxController {
 
   final RxBool loading = false.obs;
 
-  GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> signupFormKey =new GlobalKey<FormState>();
 
   String firstName = '';
   String lastName = '';
