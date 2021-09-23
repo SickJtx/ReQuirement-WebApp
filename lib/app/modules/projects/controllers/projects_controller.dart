@@ -43,6 +43,7 @@ class ProjectsController extends GetxController {
 
   final RxList<RxBool> isSelected = <RxBool>[].obs;
   final RxList<int> selectedRequirements = <int>[].obs;
+  final qSelectedItems = 0.obs;
   final RxList<dynamic> generatedRequirements = [].obs;
 
   final RxBool loading = false.obs;

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:re_quirement/app/modules/my_project_details/providers/project_details_provider.dart';
 import 'package:re_quirement/app/utils/controllers/session_controller.dart';
@@ -27,11 +28,27 @@ class MyProjectDetailsController extends GetxController {
   final logger = Logger(
     printer: PrettyPrinter(),
   );
-  final RxList<dynamic> projectInfo = [].obs;
+  dynamic projectInfo = {}.obs;
   final RxList<Requirement> requirements = <Requirement>[].obs;
 
+  final projectName = "".obs;
+  final projectMarketTypeName = "".obs;
+  final visibility = "".obs;
+  final tags = [].obs;
+
+  void setInfo() {
+    tags.clear();
+    projectName.value = projectInfo["projectName"].toString();
+    projectMarketTypeName.value =
+        projectInfo["marketType"]["marketTypeName"].toString();
+    visibility.value = projectInfo["visibility"].toString() == "PUBLIC"
+        ? "Público"
+        : "Privado";
+    tags.value = projectInfo["tags"] as List;
+  }
+
   Future getProjectInfo({required String pid}) async {
-    projectInfo.value.clear();
+    loading.value = true;
     final ctrl = Get.find<SessionController>();
     dio.Response response;
     try {
@@ -40,7 +57,8 @@ class MyProjectDetailsController extends GetxController {
 
       if (response.statusCode == 200) {
         logger.i(response.data);
-        projectInfo.value.add(response.data);
+        projectInfo.value = response.data;
+        setInfo();
         loadRequirements();
       } else {
         logger.i(response.statusCode);
@@ -56,12 +74,13 @@ class MyProjectDetailsController extends GetxController {
   void loadRequirements() {
     requirements.value.clear();
     final List<dynamic> list =
-        projectInfo[0]["productBacklogs"][0]["requirements"] as List;
+        projectInfo["productBacklogs"][0]["requirements"] as List;
     for (int i = 0; i < list.length; i++) {
       requirements.value.add(
         Requirement(
           codigo: (i > 9) ? "RF$i" : "RF0$i",
-          detalles: list[i]["systemDescription"].toString(),
+          detalles: toBeginningOfSentenceCase(
+              list[i]["systemDescription"].toString()),
           fecha: DateTime.now(),
           prioridad: "Alta",
           puntos: 3,
