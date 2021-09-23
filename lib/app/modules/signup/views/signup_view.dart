@@ -134,6 +134,7 @@ class SignUpView extends GetView<SignUpController> {
                                         inputSetter: (String value) {
                                           controller.password = value;
                                         },
+                                        obscure: true,
                                       ),
                                       const SizedBox(
                                         height: 25,
@@ -153,6 +154,7 @@ class SignUpView extends GetView<SignUpController> {
                                         inputSetter: (String value) {
                                           controller.repeatPassword = value;
                                         },
+                                        obscure: true,
                                       ),
                                       const SizedBox(
                                         height: 25,

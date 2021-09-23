@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 import 'package:re_quirement/app/modules/projects/controllers/projects_controller.dart';
@@ -45,9 +46,11 @@ class Step2 extends GetView<ProjectsController> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Seleccione Requisito: ${controller.selectedRequirements.value.length} seleccionados",
-                      style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                    Obx(
+                      () => Text(
+                        "Seleccione Requisito: ${controller.qSelectedItems.value} seleccionados",
+                        style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     const SizedBox(
                       height: 7,
@@ -69,7 +72,9 @@ class Step2 extends GetView<ProjectsController> {
                                         .isSelected.value[index].value
                                     ? const Icon(Icons.check_circle)
                                     : const Icon(Icons.check_circle_outline),
-                                title: Text(map["systemDescription"].toString(),
+                                title: Text(
+                                    toBeginningOfSentenceCase(
+                                        map["systemDescription"].toString())!,
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w400)),
                                 selected:
@@ -83,12 +88,14 @@ class Step2 extends GetView<ProjectsController> {
                                         .add(index);
                                     controller.isSelected.value[index].value =
                                         true;
+                                    controller.qSelectedItems.value++;
                                   } else {
                                     // ignore: invalid_use_of_protected_member
                                     controller.selectedRequirements.value
                                         .remove(index);
                                     controller.isSelected.value[index].value =
                                         false;
+                                    controller.qSelectedItems.value--;
                                   }
                                 },
                               ),

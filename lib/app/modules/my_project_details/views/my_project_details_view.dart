@@ -50,8 +50,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                               height: 20,
                             ),
                             Text(
-                              controller.projectInfo[0]["projectName"]
-                                  .toString(),
+                              controller.projectName.value,
                               style: GoogleFonts.roboto(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
@@ -62,9 +61,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      controller.projectInfo[0]["marketType"]
-                                              ["marketTypeName"]
-                                          .toString(),
+                                      controller.projectMarketTypeName.value,
                                     ),
                                   ),
                                 ),
@@ -73,11 +70,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      controller.projectInfo[0]["visibility"]
-                                                  .toString() ==
-                                              "PUBLIC"
-                                          ? "Público"
-                                          : "Privado",
+                                      controller.visibility.value,
                                     ),
                                   ),
                                 ),
@@ -93,20 +86,23 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Wrap(
-                                spacing: 10,
-                                children: (controller.projectInfo[0]["tags"]
-                                        as List<dynamic>)
-                                    .map(
-                                  (e) {
-                                    return TagItem(
-                                      tag: e["tagDescription"].toString(),
-                                    );
-                                  },
-                                ).toList(),
-                              ),
+                            Obx(
+                              () => controller.tags.value.isEmpty
+                                  ? const SizedBox()
+                                  : Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Wrap(
+                                        spacing: 10,
+                                        children: (controller.tags.value).map(
+                                          (e) {
+                                            return TagItem(
+                                              tag: e["tagDescription"]
+                                                  .toString(),
+                                            );
+                                          },
+                                        ).toList(),
+                                      ),
+                                    ),
                             ),
                             SizedBox(
                               width: screenSize.width * 9 / 10,
