@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -36,7 +38,7 @@ class Step1 extends GetView<ProjectsController> {
               Wrap(
                 children: [
                   StepsItem(
-                    itemLabel: "Nombre del proyecto",
+                    itemLabel: AppLocalizations.of(context)!.nameOfProjectStep1,
                     withBorder: false,
                     child: SizedBox(
                       width: screenSize.width * 3 / 14,
@@ -45,8 +47,10 @@ class Step1 extends GetView<ProjectsController> {
                         inputValidation: controller.validateProjectName,
                         inputType: TextInputType.text,
                         icon: Icons.business_center_outlined,
-                        hintText: 'Ingresa el nombre de tu proyecto',
-                        labelText: '',
+                        hintText: AppLocalizations.of(context)!
+                            .nameOfProjectHintStep1,
+                        labelText: AppLocalizations.of(context)!
+                            .nameOfProjectLabelStep1,
                         inputValue: controller.projectName,
                         inputSetter: (String value) {
                           controller.projectName = value;
@@ -55,7 +59,8 @@ class Step1 extends GetView<ProjectsController> {
                     ),
                   ),
                   StepsItem(
-                    itemLabel: "Tipo de mercado",
+                    itemLabel:
+                        AppLocalizations.of(context)!.typeOfMarketLabelStep1,
                     child: Obx(
                       () => SizedBox(
                         width: screenSize.width * 3 / 14,
@@ -88,7 +93,7 @@ class Step1 extends GetView<ProjectsController> {
                 ],
               ),
               StepsItem(
-                itemLabel: "Visibilidad del proyecto",
+                itemLabel: AppLocalizations.of(context)!.visibilityLabelStep1,
                 child: Obx(
                   () => SizedBox(
                     width: screenSize.width * 3 / 14,
@@ -134,9 +139,9 @@ class Step1 extends GetView<ProjectsController> {
                               !controller.autoGenerate.value;
                         },
                         child: Text(
-                          "Autogenerar requisitos",
-                          style:
-                              GoogleFonts.roboto(fontWeight: FontWeight.w500),
+                          AppLocalizations.of(context)!.autoGenerateStep1,
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
                     ],
@@ -164,7 +169,9 @@ class Step1 extends GetView<ProjectsController> {
                       primary: Colors.red,
                       //side: const BorderSide(color: Colors.red),
                     ),
-                    child: const Text("Cancel"),
+                    child: Text(
+                      AppLocalizations.of(context)!.cancelLabelStep1,
+                    ),
                   ),
                   const Expanded(
                     child: SizedBox(
@@ -174,7 +181,8 @@ class Step1 extends GetView<ProjectsController> {
                   ElevatedButton(
                     onPressed: () async {
                       if (controller.validStep1() &&
-                          controller.tipoMercado.value != 'Seleccionar tipo') {
+                          controller.tipoMercado.value !=
+                              AppLocalizations.of(context)!.selectTypeStep1) {
                         if (controller.autoGenerate.value) {
                           controller.step.value = 2;
                           await controller.generateProject();
@@ -186,16 +194,18 @@ class Step1 extends GetView<ProjectsController> {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.green),
                     ),
-                    child: const Text("NEXT"),
+                    child: Text(
+                      AppLocalizations.of(context)!.nextLabelStep1,
+                    ),
                   ),
                   const Expanded(
                     flex: 2,
                     child: SizedBox(
                       width: 1,
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

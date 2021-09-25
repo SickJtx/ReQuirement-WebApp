@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:get/get.dart';
 import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
 
@@ -18,18 +20,18 @@ class LoginAppBar extends GetView<NavbarController> {
         SizedBox(
           width: screenSize.width / 8,
         ),
-        const AppBarItem(
+        AppBarItem(
           index: 0,
           route: '/signin',
-          title: "Crear Cuenta",
+          title: AppLocalizations.of(context)!.signInAppbarText,
         ),
         SizedBox(
           width: screenSize.width / 20,
         ),
-        const AppBarItem(
+        AppBarItem(
           index: 1,
           route: '/login',
-          title: "Iniciar Sesión",
+          title: AppLocalizations.of(context)!.logInAppbarText,
         ),
         SizedBox(
           width: screenSize.width / 20,

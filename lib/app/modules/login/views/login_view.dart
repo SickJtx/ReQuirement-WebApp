@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -67,10 +66,11 @@ class LoginView extends GetView<LoginController> {
                                     ),
                                   ),
                                   Text(
-                                    "Iniciar sesión",
+                                    AppLocalizations.of(context)!.loginTitle,
                                     style: GoogleFonts.montserrat(
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.w700),
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                   const Expanded(
                                     child: SizedBox(
@@ -82,8 +82,10 @@ class LoginView extends GetView<LoginController> {
                                     inputValidation: controller.validateEmail,
                                     inputType: TextInputType.emailAddress,
                                     icon: Icons.email_outlined,
-                                    hintText: 'Ingresa tu correo',
-                                    labelText: 'Correo',
+                                    hintText:
+                                        AppLocalizations.of(context)!.mailHint,
+                                    labelText:
+                                        AppLocalizations.of(context)!.mailLabel,
                                     inputValue: controller.username,
                                     inputSetter: (String value) {
                                       controller.username = value;
@@ -99,8 +101,10 @@ class LoginView extends GetView<LoginController> {
                                         controller.validatePassword,
                                     inputType: TextInputType.visiblePassword,
                                     icon: Icons.lock_outline,
-                                    hintText: 'Ingresa tu contraseña',
-                                    labelText: 'Contraseña',
+                                    hintText: AppLocalizations.of(context)!
+                                        .passwordHint,
+                                    labelText: AppLocalizations.of(context)!
+                                        .passwordLabel,
                                     inputValue: controller.password,
                                     inputSetter: (String value) {
                                       controller.password = value;
@@ -133,7 +137,8 @@ class LoginView extends GetView<LoginController> {
                                             width: 8,
                                           ),
                                           Text(
-                                            "Mantener sesión iniciada",
+                                            AppLocalizations.of(context)!
+                                                .keepSessionOn,
                                             style: GoogleFonts.montserrat(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w300,
@@ -174,7 +179,8 @@ class LoginView extends GetView<LoginController> {
                                         ),
                                       ),
                                       child: Text(
-                                        "Ingresar",
+                                        AppLocalizations.of(context)!
+                                            .loginButtonText,
                                         style: GoogleFonts.montserrat(
                                           fontSize: 14,
                                           color: Colors.white,
@@ -193,7 +199,8 @@ class LoginView extends GetView<LoginController> {
                                         controller.hoverText.value = value;
                                       },
                                       child: Text(
-                                        "Recuperar contraseña",
+                                        AppLocalizations.of(context)!
+                                            .retrievePassword,
                                         style: GoogleFonts.montserrat(
                                           decoration: TextDecoration.underline,
                                           fontWeight: FontWeight.bold,

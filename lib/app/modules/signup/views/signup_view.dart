@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,17 +57,18 @@ class SignUpView extends GetView<SignUpController> {
                                       AutovalidateMode.onUserInteraction,
                                   child: Column(
                                     children: [
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 30,
                                       ),
                                       Text(
-                                        "Crear Cuenta",
+                                        AppLocalizations.of(context)!
+                                            .createAccountSignUpText,
                                         style: GoogleFonts.montserrat(
                                           fontSize: 40,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 30,
                                       ),
                                       CustomFormField(
@@ -76,8 +78,10 @@ class SignUpView extends GetView<SignUpController> {
                                             controller.validateOnlyLetters,
                                         inputType: TextInputType.text,
                                         icon: Icons.person_outline,
-                                        hintText: 'Ingresa tu Nombre',
-                                        labelText: 'Nombre',
+                                        hintText: AppLocalizations.of(context)!
+                                            .firstNameHintSignUp,
+                                        labelText: AppLocalizations.of(context)!
+                                            .firstNameLabelSignUp,
                                         inputValue: controller.firstName,
                                         inputSetter: (String value) {
                                           controller.firstName = value;
@@ -93,8 +97,10 @@ class SignUpView extends GetView<SignUpController> {
                                             controller.validateOnlyLetters,
                                         inputType: TextInputType.text,
                                         icon: Icons.person_outline,
-                                        hintText: 'Ingresa tu Apellido',
-                                        labelText: 'Apellido',
+                                        hintText: AppLocalizations.of(context)!
+                                            .lastNameHintSignUp,
+                                        labelText: AppLocalizations.of(context)!
+                                            .lastNameLabelSignUp,
                                         inputValue: controller.lastName,
                                         inputSetter: (String value) {
                                           controller.lastName = value;
@@ -110,8 +116,10 @@ class SignUpView extends GetView<SignUpController> {
                                             controller.validateEmail,
                                         inputType: TextInputType.emailAddress,
                                         icon: Icons.email_outlined,
-                                        hintText: 'Ingresa tu correo',
-                                        labelText: 'Correo',
+                                        hintText: AppLocalizations.of(context)!
+                                            .emailHintSignUp,
+                                        labelText: AppLocalizations.of(context)!
+                                            .emailLabelSignUp,
                                         inputValue: controller.username,
                                         inputSetter: (String value) {
                                           controller.username = value;
@@ -128,8 +136,10 @@ class SignUpView extends GetView<SignUpController> {
                                         inputType:
                                             TextInputType.visiblePassword,
                                         icon: Icons.lock_outline,
-                                        hintText: 'Ingresa tu contraseña',
-                                        labelText: 'Contraseña',
+                                        hintText: AppLocalizations.of(context)!
+                                            .passwordHintSignUp,
+                                        labelText: AppLocalizations.of(context)!
+                                            .passwordLabelSignUp,
                                         inputValue: controller.password,
                                         inputSetter: (String value) {
                                           controller.password = value;
@@ -148,8 +158,10 @@ class SignUpView extends GetView<SignUpController> {
                                             TextInputType.visiblePassword,
                                         icon:
                                             Icons.enhanced_encryption_outlined,
-                                        hintText: 'Repite tu contraseña',
-                                        labelText: 'Repetir Contraseña',
+                                        hintText: AppLocalizations.of(context)!
+                                            .passwordConfirmHintSignUp,
+                                        labelText: AppLocalizations.of(context)!
+                                            .passwordConfirmLabelSignUp,
                                         inputValue: controller.repeatPassword,
                                         inputSetter: (String value) {
                                           controller.repeatPassword = value;
@@ -166,9 +178,10 @@ class SignUpView extends GetView<SignUpController> {
                                             controller.validateAdress,
                                         inputType: TextInputType.streetAddress,
                                         icon: Icons.home_outlined,
-                                        hintText:
-                                            'Ingresa tu dirección principal',
-                                        labelText: 'Dirección principal',
+                                        hintText: AppLocalizations.of(context)!
+                                            .address1HintSignUp,
+                                        labelText: AppLocalizations.of(context)!
+                                            .address1LabelSignUp,
                                         inputValue: controller.primaryAddress,
                                         inputSetter: (String value) {
                                           controller.primaryAddress = value;
@@ -184,9 +197,10 @@ class SignUpView extends GetView<SignUpController> {
                                             controller.validateAdress,
                                         inputType: TextInputType.streetAddress,
                                         icon: Icons.business_outlined,
-                                        hintText:
-                                            'Ingresa tu dirección secundaria',
-                                        labelText: 'Dirección secundaria',
+                                        hintText: AppLocalizations.of(context)!
+                                            .address2HintSignUp,
+                                        labelText: AppLocalizations.of(context)!
+                                            .address2LabelSignUp,
                                         inputValue: controller.secondaryAddress,
                                         inputSetter: (String value) {
                                           controller.secondaryAddress = value;
@@ -220,7 +234,8 @@ class SignUpView extends GetView<SignUpController> {
                                             ),
                                           ),
                                           child: Text(
-                                            "Registrarse",
+                                            AppLocalizations.of(context)!
+                                                .registerButtonText,
                                             style: GoogleFonts.montserrat(
                                               fontSize: 14,
                                               color: Colors.white,
@@ -229,7 +244,7 @@ class SignUpView extends GetView<SignUpController> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 30,
                                       ),
                                     ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -51,13 +52,14 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                             ),
                             Text(
                               controller.projectName.value,
-                              style: GoogleFonts.roboto(
+                              style: GoogleFonts.montserrat(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Wrap(
                               children: [
                                 LabeledItem(
-                                  itemLabel: "Tipo de mercado:",
+                                  itemLabel: AppLocalizations.of(context)!
+                                      .typeOfMarketProjectDetails,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
@@ -66,7 +68,8 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                   ),
                                 ),
                                 LabeledItem(
-                                  itemLabel: "Visibilidad:",
+                                  itemLabel: AppLocalizations.of(context)!
+                                      .visibilityProjectDetails,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
@@ -81,9 +84,11 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
-                                "Tags del proyecto",
-                                style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.w500),
+                                AppLocalizations.of(context)!
+                                    .projectTagsProjectDetails,
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                             Obx(
@@ -111,8 +116,9 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Requisitos',
-                                      style: GoogleFonts.roboto(
+                                      AppLocalizations.of(context)!
+                                          .requirementsProjectDetails,
+                                      style: GoogleFonts.montserrat(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w400),
                                     ),

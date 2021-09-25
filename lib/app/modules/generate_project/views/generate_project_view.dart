@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:re_quirement/app/modules/my_project_details/views/widgets/requirement_item.dart';
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 import 'package:re_quirement/app/utils/widgets/labeled_item.dart';
 import 'package:re_quirement/app/utils/widgets/tag_item.dart';
@@ -52,13 +51,14 @@ class GenerateProjectView extends GetView<GenerateProjectController> {
                             ),
                             Text(
                               map["projectName"].toString(),
-                              style: GoogleFonts.roboto(
+                              style: GoogleFonts.montserrat(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Wrap(
                               children: [
                                 LabeledItem(
-                                  itemLabel: "Tipo de mercado:",
+                                  itemLabel: AppLocalizations.of(context)!
+                                      .typeOfMarketGenerateProject,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
@@ -67,7 +67,8 @@ class GenerateProjectView extends GetView<GenerateProjectController> {
                                   ),
                                 ),
                                 LabeledItem(
-                                  itemLabel: "Visibilidad:",
+                                  itemLabel: AppLocalizations.of(context)!
+                                      .visibilityGenerateProject,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
@@ -82,9 +83,11 @@ class GenerateProjectView extends GetView<GenerateProjectController> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
-                                "Tags del proyecto",
-                                style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.w500),
+                                AppLocalizations.of(context)!
+                                    .projectTagsGenerateProject,
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                             Padding(
@@ -109,10 +112,12 @@ class GenerateProjectView extends GetView<GenerateProjectController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Requisitos',
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w400),
+                                      AppLocalizations.of(context)!
+                                          .requirementsGenerateProject,
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -125,7 +130,6 @@ class GenerateProjectView extends GetView<GenerateProjectController> {
                                 height: 5,
                               ),
                             ),
-                            
                           ],
                         ),
                       ),
