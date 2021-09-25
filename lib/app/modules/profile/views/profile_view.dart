@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,38 +36,45 @@ class ProfileView extends GetView<ProfileController> {
                       return Column(
                         children: [
                           Text(
-                            "Crear Cuenta",
-                            style: GoogleFonts.roboto(
-                                fontSize: 28, fontWeight: FontWeight.w500),
+                            AppLocalizations.of(context)!.createAccountProfile,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                           Wrap(
                             children: [
                               ProfileItem(
-                                itemLabel: "Nombre",
+                                itemLabel: AppLocalizations.of(context)!
+                                    .firstNameProfile,
                                 controller: controller.firstNameController,
                                 editor: controller.editor.value,
                               ),
                               ProfileItem(
-                                itemLabel: "Apellido",
+                                itemLabel: AppLocalizations.of(context)!
+                                    .lastNameProfile,
                                 controller: controller.lastNameController,
                                 editor: controller.editor.value,
                               ),
                             ],
                           ),
                           ProfileItem(
-                            itemLabel: "Correo",
+                            itemLabel:
+                                AppLocalizations.of(context)!.emailProfile,
                             controller: controller.emailController,
                             editor: controller.editor.value,
                           ),
                           Wrap(
                             children: [
                               ProfileItem(
-                                itemLabel: "Dirección 1",
+                                itemLabel: AppLocalizations.of(context)!
+                                    .address1Profile,
                                 controller: controller.primaryAddressController,
                                 editor: controller.editor.value,
                               ),
                               ProfileItem(
-                                itemLabel: "Dirección 2",
+                                itemLabel: AppLocalizations.of(context)!
+                                    .address2Profile,
                                 controller:
                                     controller.secundaryAddressController,
                                 editor: controller.editor.value,
@@ -74,9 +82,11 @@ class ProfileView extends GetView<ProfileController> {
                             ],
                           ),
                           ProfileItem(
-                              itemLabel: "Tipo de plan",
-                              controller: controller.subscribedController,
-                              editor: false),
+                            itemLabel:
+                                AppLocalizations.of(context)!.typeOfPlanProfile,
+                            controller: controller.subscribedController,
+                            editor: false,
+                          ),
                           const SizedBox(
                             height: 25,
                           ),
@@ -93,11 +103,13 @@ class ProfileView extends GetView<ProfileController> {
                                     MaterialStateProperty.all(Colors.green),
                               ),
                               child: Text(
-                                "EDITAR PERFIL",
-                                style: GoogleFonts.roboto(
-                                    fontSize: 20,
-                                    color: Colors.white70,
-                                    fontWeight: FontWeight.w300),
+                                AppLocalizations.of(context)!
+                                    .editProfileProfile,
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 20,
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ),
                           ),

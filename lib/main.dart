@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:re_quirement/app/modules/login/controllers/login_controller.dart';
 import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
@@ -22,9 +23,21 @@ void main() {
   Get.put(MyProjectDetailsController());
   runApp(
     GetMaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('es', ''),
+      ],
       defaultTransition: Transition.fadeIn,
       debugShowCheckedModeBanner: false,
       title: "ReQuirement",
+      // onGenerateTitle: (BuildContext context) =>
+      //     AppLocalizations.of(context)!.loginTitle,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       theme: theme.copyWith(

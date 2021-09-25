@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:get/get.dart';
 import 'package:re_quirement/app/modules/projects/controllers/projects_controller.dart';
 import 'package:re_quirement/app/modules/projects/views/widgets/steps_item.dart';
@@ -33,7 +35,7 @@ class Step3 extends GetView<ProjectsController> {
                 width: 700,
               ),
               StepsItem(
-                itemLabel: "Agregar Tag",
+                itemLabel: AppLocalizations.of(context)!.addTagStep3,
                 withBorder: false,
                 child: SizedBox(
                   width: screenSize.width * 3 / 14,
@@ -47,8 +49,10 @@ class Step3 extends GetView<ProjectsController> {
                           inputValidation: controller.validateTagName,
                           inputType: TextInputType.text,
                           icon: Icons.local_offer_outlined,
-                          hintText: 'Ingresa un tag',
-                          labelText: '',
+                          hintText:
+                              AppLocalizations.of(context)!.enterATagHintStep3,
+                          labelText:
+                              AppLocalizations.of(context)!.enterATagLabelStep3,
                           inputValue: controller.tagName,
                           inputSetter: (String value) {
                             controller.tagName = value;
@@ -101,7 +105,9 @@ class Step3 extends GetView<ProjectsController> {
                       primary: Colors.red,
                       //side: const BorderSide(color: Colors.red),
                     ),
-                    child: const Text("Cancel"),
+                    child: Text(
+                      AppLocalizations.of(context)!.cancelLabelStep3,
+                    ),
                   ),
                   const Expanded(
                     child: SizedBox(
@@ -119,7 +125,9 @@ class Step3 extends GetView<ProjectsController> {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.orange),
                     ),
-                    child: const Text("Back"),
+                    child: Text(
+                      AppLocalizations.of(context)!.backLabelStep3,
+                    ),
                   ),
                   const Expanded(
                     child: SizedBox(
@@ -132,16 +140,18 @@ class Step3 extends GetView<ProjectsController> {
                         await controller.createProject();
                       }
                     },
-                    child: const Text("Finalizar"),
+                    child: Text(
+                      AppLocalizations.of(context)!.finishLabelStep3,
+                    ),
                   ),
                   const Expanded(
                     flex: 2,
                     child: SizedBox(
                       width: 1,
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

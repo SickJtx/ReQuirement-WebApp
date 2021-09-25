@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 import 'package:re_quirement/app/modules/projects/controllers/projects_controller.dart';
-import 'package:re_quirement/app/modules/projects/views/widgets/steps_item.dart';
-import 'package:re_quirement/app/utils/constants/styles.dart';
-import 'package:re_quirement/app/utils/widgets/custom_form_field.dart';
 
 class Step2 extends GetView<ProjectsController> {
   const Step2({
@@ -47,9 +46,20 @@ class Step2 extends GetView<ProjectsController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(
-                      () => Text(
-                        "Seleccione Requisito: ${controller.qSelectedItems.value} seleccionados",
-                        style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                      () => RichText(
+                        text: TextSpan(
+                          text: AppLocalizations.of(context)!
+                              .selectRequirementStep2,
+                          style: DefaultTextStyle.of(context).style,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: '${controller.qSelectedItems.value} ',
+                            ),
+                            TextSpan(
+                              text: AppLocalizations.of(context)!.selectedStep2,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -75,7 +85,7 @@ class Step2 extends GetView<ProjectsController> {
                                 title: Text(
                                     toBeginningOfSentenceCase(
                                         map["systemDescription"].toString())!,
-                                    style: GoogleFonts.roboto(
+                                    style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w400)),
                                 selected:
                                     controller.isSelected.value[index].value,
@@ -124,7 +134,9 @@ class Step2 extends GetView<ProjectsController> {
                             primary: Colors.red,
                             //side: const BorderSide(color: Colors.red),
                           ),
-                          child: const Text("Cancel"),
+                          child: Text(
+                            AppLocalizations.of(context)!.cancelLabelStep2,
+                          ),
                         ),
                         const Expanded(
                           child: SizedBox(
@@ -139,7 +151,9 @@ class Step2 extends GetView<ProjectsController> {
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.orange),
                           ),
-                          child: const Text("Back"),
+                          child: Text(
+                            AppLocalizations.of(context)!.backLabelStep2,
+                          ),
                         ),
                         const Expanded(
                           child: SizedBox(
@@ -156,16 +170,18 @@ class Step2 extends GetView<ProjectsController> {
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.green),
                           ),
-                          child: const Text("NEXT"),
+                          child: Text(
+                            AppLocalizations.of(context)!.nextLabelStep2,
+                          ),
                         ),
                         const Expanded(
                           flex: 2,
                           child: SizedBox(
                             width: 1,
                           ),
-                        )
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
         ),

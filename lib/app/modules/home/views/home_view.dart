@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,8 +55,9 @@ class HomeView extends GetView<HomeController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "PROYECTOS PÚBLICOS",
-                                      style: GoogleFonts.roboto(
+                                      AppLocalizations.of(context)!
+                                          .publicProjectsText,
+                                      style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -68,45 +70,50 @@ class HomeView extends GetView<HomeController> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        "Proyecto",
+                                        AppLocalizations.of(context)!
+                                            .projectTextHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Creación",
+                                        AppLocalizations.of(context)!
+                                            .createTextHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Tipo de Mercado",
+                                        AppLocalizations.of(context)!
+                                            .typeOfMarketHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Visibilidad",
+                                        AppLocalizations.of(context)!
+                                            .typeOfMarketHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "#Requisitos",
+                                        AppLocalizations.of(context)!
+                                            .requirementsHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -114,9 +121,10 @@ class HomeView extends GetView<HomeController> {
                                     Expanded(
                                       flex: 2,
                                       child: Text(
-                                        "Acciones",
+                                        AppLocalizations.of(context)!
+                                            .actionsHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -166,7 +174,8 @@ class HomeView extends GetView<HomeController> {
                                                     map["projectName"]
                                                         .toString(),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
@@ -178,7 +187,8 @@ class HomeView extends GetView<HomeController> {
                                                         map["createdAt"]
                                                             .toString())),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -190,7 +200,8 @@ class HomeView extends GetView<HomeController> {
                                                             ["marketTypeName"]
                                                         .toString(),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -201,10 +212,15 @@ class HomeView extends GetView<HomeController> {
                                                     map["visibility"]
                                                                 .toString() ==
                                                             "PUBLIC"
-                                                        ? "Público"
-                                                        : "Privado",
+                                                        ? AppLocalizations.of(
+                                                                context)!
+                                                            .visibilityPublicHome
+                                                        : AppLocalizations.of(
+                                                                context)!
+                                                            .visibilityPrivateHome,
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -214,65 +230,73 @@ class HomeView extends GetView<HomeController> {
                                                   child: Text(
                                                     "0",
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
                                                   ),
                                                 ),
                                                 Expanded(
-                                                    flex: 2,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        const Expanded(
-                                                          flex: 2,
-                                                          child: SizedBox(
-                                                            width: 1,
+                                                  flex: 2,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      const Expanded(
+                                                        flex: 2,
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                      OutlinedButton(
+                                                        onPressed: () {
+                                                          Get.toNamed(
+                                                            "/projects/my-project-details",
+                                                          );
+                                                        },
+                                                        style: OutlinedButton
+                                                            .styleFrom(
+                                                          primary: active,
+                                                          side:
+                                                              const BorderSide(
+                                                            color: active,
                                                           ),
                                                         ),
-                                                        OutlinedButton(
-                                                          onPressed: () {
-                                                            Get.toNamed(
-                                                                "/projects/my-project-details");
-                                                          },
-                                                          style: OutlinedButton
-                                                              .styleFrom(
-                                                            primary: active,
-                                                            side:
-                                                                const BorderSide(
-                                                                    color:
-                                                                        active),
-                                                          ),
-                                                          child:
-                                                              const Text("Ver"),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .watchHome,
                                                         ),
-                                                        const Expanded(
-                                                          child: SizedBox(
-                                                            width: 1,
-                                                          ),
+                                                      ),
+                                                      const Expanded(
+                                                        child: SizedBox(
+                                                          width: 1,
                                                         ),
-                                                        ElevatedButton(
-                                                          onPressed: () {},
-                                                          style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(
-                                                                        active),
-                                                          ),
-                                                          child: const Text(
-                                                              "Clonar"),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {},
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(active),
                                                         ),
-                                                        const Expanded(
-                                                          flex: 2,
-                                                          child: SizedBox(
-                                                            width: 1,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .cloneHome,
+                                                        ),
+                                                      ),
+                                                      const Expanded(
+                                                        flex: 2,
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),

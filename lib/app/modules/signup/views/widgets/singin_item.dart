@@ -21,7 +21,7 @@ class SigninItem extends StatelessWidget {
         children: [
           Text(
             itemLabel,
-            style: GoogleFonts.roboto(fontWeight: FontWeight.w500),
+            style: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
           ),
           const SizedBox(
             height: 14,
