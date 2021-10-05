@@ -155,16 +155,6 @@ class ProjectsView extends GetView<ProjectsController> {
                                       ),
                                     ),
                                     Expanded(
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .requirementsProjects,
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
                                       flex: 2,
                                       child: Text(
                                         AppLocalizations.of(context)!
@@ -268,17 +258,6 @@ class ProjectsView extends GetView<ProjectsController> {
                                                         : AppLocalizations.of(
                                                                 context)!
                                                             .visibilityPrivateProjects,
-                                                    textAlign: TextAlign.center,
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Text(
-                                                    "0",
                                                     textAlign: TextAlign.center,
                                                     style:
                                                         GoogleFonts.montserrat(

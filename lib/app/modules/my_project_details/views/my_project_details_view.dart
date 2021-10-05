@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:re_quirement/app/modules/my_project_details/views/widgets/requirement_clone_widget.dart';
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 import 'package:re_quirement/app/utils/widgets/labeled_item.dart';
 import 'package:re_quirement/app/utils/widgets/tag_item.dart';
@@ -121,6 +122,30 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                       style: GoogleFonts.montserrat(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w400),
+                                    ),
+                                    const Expanded(
+                                      child: SizedBox(
+                                        width: 1,
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Get.defaultDialog(
+                                            title: "Clonar requisitos",
+                                            titleStyle: GoogleFonts.montserrat(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            barrierDismissible: false,
+                                            content:
+                                                const RequirementCloneWidget());
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.green),
+                                      ),
+                                      child: const Text("Clonar requisitos"),
                                     ),
                                   ],
                                 ),

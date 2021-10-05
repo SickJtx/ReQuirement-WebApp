@@ -60,7 +60,7 @@
   "projectTagsGenerateProject": "Project Tags:",
   "requirementsGenerateProject": "Requirements:",
 
-  "createAccountProfile": "Create Account:",
+  "createAccountProfile": "User Info",
   "firstNameProfile": "First Name",
   "lastNameProfile": "Last Name",
   "emailProfile": "E-mail",

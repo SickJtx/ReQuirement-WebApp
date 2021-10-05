@@ -1,15 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
-import 'package:re_quirement/app/modules/projects/controllers/projects_controller.dart';
+import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
 
-class Step2 extends GetView<ProjectsController> {
-  const Step2({
+class RequirementCloneWidget extends GetView<MyProjectDetailsController> {
+  const RequirementCloneWidget({
     Key? key,
   }) : super(key: key);
 
@@ -31,35 +31,91 @@ class Step2 extends GetView<ProjectsController> {
         margin: const EdgeInsets.symmetric(horizontal: 10),
         //height: screenSize.height * 3 / 5,
         child: Obx(
-          () => controller.generatorLoading.value
-              ? Center(
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: LoadingIndicator(
-                      colors: [Colors.deepOrange.shade500],
-                      indicatorType: Indicator.ballClipRotateMultiple,
-                    ),
+          () => controller.dropdownItems().length == 1
+              ? SizedBox(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                          child: SizedBox(
+                        height: 1,
+                      )),
+                      Text(
+                          "No hay proyectos a donde clonar. \nPor favor vuelva a intentarlo luego de crear uno nuevo",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center),
+                      const Expanded(
+                          child: SizedBox(
+                        height: 1,
+                      )),
+                      ElevatedButton(
+                        onPressed: () async {
+                          Get.back();
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.green),
+                        ),
+                        child: const Text(
+                          "Aceptar",
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(
-                      () => RichText(
-                        text: TextSpan(
-                          text: AppLocalizations.of(context)!
-                              .selectRequirementStep2,
-                          style: DefaultTextStyle.of(context).style,
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: '${controller.qSelectedItems.value} ',
+                      () => Row(
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              text: AppLocalizations.of(context)!
+                                  .selectRequirementStep2,
+                              style: DefaultTextStyle.of(context).style,
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '${controller.qSelectedItems.value} ',
+                                ),
+                                TextSpan(
+                                  text: AppLocalizations.of(context)!
+                                      .selectedStep2,
+                                ),
+                              ],
                             ),
-                            TextSpan(
-                              text: AppLocalizations.of(context)!.selectedStep2,
+                          ),
+                          const Expanded(
+                            child: SizedBox(
+                              width: 1,
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            width: 200,
+                            height: 30,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                isExpanded: true,
+                                elevation: 16,
+                                value: controller.selectedProjectName.value,
+                                items: (controller.dropdownItems()).map(
+                                  (value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  },
+                                ).toList(),
+                                onChanged: (String? value) {
+                                  controller.selectedProjectName.value = value!;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(
@@ -67,11 +123,10 @@ class Step2 extends GetView<ProjectsController> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount:
-                            controller.generatedRequirements.value.length,
+                        itemCount: controller.requirementList.value.length,
                         itemBuilder: (context, index) {
                           final dynamic map =
-                              controller.generatedRequirements[index];
+                              controller.requirementList.value[index];
                           return Obx(
                             () => Container(
                               color: controller.isSelected.value[index].value
@@ -129,14 +184,14 @@ class Step2 extends GetView<ProjectsController> {
                         OutlinedButton(
                           onPressed: () {
                             Get.back();
-                            controller.clearForms();
+                            controller.clearList();
                           },
                           style: OutlinedButton.styleFrom(
                             primary: Colors.red,
                             //side: const BorderSide(color: Colors.red),
                           ),
-                          child: Text(
-                            AppLocalizations.of(context)!.cancelLabelStep2,
+                          child: const Text(
+                            "Cancelar",
                           ),
                         ),
                         const Expanded(
@@ -145,34 +200,19 @@ class Step2 extends GetView<ProjectsController> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            controller.step.value = 1;
-                          },
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.orange),
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.backLabelStep2,
-                          ),
-                        ),
-                        const Expanded(
-                          child: SizedBox(
-                            width: 1,
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (controller.selectedRequirements.length >= 5) {
-                              controller.step.value = 3;
+                          onPressed: () async {
+                            if (controller.qSelectedItems > 0 &&
+                                controller.selectedProjectName.value !=
+                                    "Seleccionar proyecto") {
+                              await controller.cloneRequirements();
                             }
                           },
                           style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.green),
                           ),
-                          child: Text(
-                            AppLocalizations.of(context)!.nextLabelStep2,
+                          child: const Text(
+                            "Reutilizar",
                           ),
                         ),
                         const Expanded(

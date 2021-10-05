@@ -99,26 +99,6 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                     ),
                                     Expanded(
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .typeOfMarketHome,
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .requirementsHome,
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
                                       flex: 2,
                                       child: Text(
                                         AppLocalizations.of(context)!
@@ -208,36 +188,6 @@ class HomeView extends GetView<HomeController> {
                                                   ),
                                                 ),
                                                 Expanded(
-                                                  child: Text(
-                                                    map["visibility"]
-                                                                .toString() ==
-                                                            "PUBLIC"
-                                                        ? AppLocalizations.of(
-                                                                context)!
-                                                            .visibilityPublicHome
-                                                        : AppLocalizations.of(
-                                                                context)!
-                                                            .visibilityPrivateHome,
-                                                    textAlign: TextAlign.center,
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Text(
-                                                    "0",
-                                                    textAlign: TextAlign.center,
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
                                                   flex: 2,
                                                   child: Row(
                                                     mainAxisAlignment:
@@ -251,9 +201,14 @@ class HomeView extends GetView<HomeController> {
                                                         ),
                                                       ),
                                                       OutlinedButton(
-                                                        onPressed: () {
+                                                        onPressed: () async {
                                                           Get.toNamed(
-                                                            "/projects/my-project-details",
+                                                              "/projects/my-project-details");
+                                                          await Get.find<
+                                                                  MyProjectDetailsController>()
+                                                              .getProjectInfo(
+                                                            pid: map["id"]
+                                                                .toString(),
                                                           );
                                                         },
                                                         style: OutlinedButton
