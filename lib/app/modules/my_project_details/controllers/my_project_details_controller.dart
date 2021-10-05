@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:re_quirement/app/modules/my_project_details/providers/project_details_provider.dart';
+import 'package:re_quirement/app/modules/projects/controllers/projects_controller.dart';
 import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 
 class Requirement {
@@ -29,12 +30,29 @@ class MyProjectDetailsController extends GetxController {
     printer: PrettyPrinter(),
   );
   dynamic projectInfo = {}.obs;
+  final RxList<dynamic> requirementList = [].obs;
   final RxList<Requirement> requirements = <Requirement>[].obs;
 
   final projectName = "".obs;
   final projectMarketTypeName = "".obs;
   final visibility = "".obs;
   final tags = [].obs;
+
+  final qSelectedItems = 0.obs;
+  final RxList<RxBool> isSelected = <RxBool>[].obs;
+  final RxList<int> selectedRequirements = <int>[].obs;
+  final selectedProjectName = "Seleccionar proyecto".obs;
+  final selectedProjectid = "0".obs;
+  void clearList() {
+    tags.clear();
+    //productBacklog.clear();
+    for (RxBool i in isSelected) {
+      i.value = false;
+    }
+    selectedProjectName.value = "Seleccionar proyecto";
+    selectedRequirements.clear();
+    qSelectedItems.value = 0;
+  }
 
   void setInfo() {
     tags.clear();
@@ -44,6 +62,7 @@ class MyProjectDetailsController extends GetxController {
     visibility.value = projectInfo["visibility"].toString() == "PUBLIC"
         ? "Público"
         : "Privado";
+    logger.wtf(projectInfo["tags"]);
     tags.value = projectInfo["tags"] as List;
   }
 
@@ -58,8 +77,8 @@ class MyProjectDetailsController extends GetxController {
       if (response.statusCode == 200) {
         logger.i(response.data);
         projectInfo.value = response.data;
-        setInfo();
         loadRequirements();
+        setInfo();
       } else {
         logger.i(response.statusCode);
         Get.back();
@@ -71,21 +90,83 @@ class MyProjectDetailsController extends GetxController {
     }
   }
 
+  List<dynamic> getSelectedRequirements() {
+    final List<dynamic> selectedRequirementList = [];
+    for (final int i in selectedRequirements) {
+      selectedRequirementList.add(requirementList[i]);
+    }
+    return selectedRequirementList;
+  }
+
+  Future cloneRequirements() async {
+    getSelectedProjectId();
+    loading.value = true;
+    final ctrl = Get.find<SessionController>();
+    dio.Response response;
+    try {
+      response = await ProjectDetailsProvider().cloneRequirements(
+          token: ctrl.token.value,
+          pid: selectedProjectid.value,
+          requirements: getSelectedRequirements());
+
+      if (response.statusCode == 200) {
+        logger.i(response.data);
+        clearList();
+      } else {
+        logger.i(response.statusCode);
+        Get.back();
+        clearList();
+      }
+      loading.value = false;
+    } on Exception catch (e) {
+      logger.e(e);
+      Get.back();
+      loading.value = false;
+    }
+  }
+
   void loadRequirements() {
-    requirements.value.clear();
-    final List<dynamic> list =
-        projectInfo["productBacklogs"][0]["requirements"] as List;
-    for (int i = 0; i < list.length; i++) {
-      requirements.value.add(
-        Requirement(
-          codigo: (i > 9) ? "RF$i" : "RF0$i",
-          detalles: toBeginningOfSentenceCase(
-              list[i]["systemDescription"].toString()),
-          fecha: DateTime.now(),
-          prioridad: "Alta",
-          puntos: 3,
-        ),
-      );
+    clearList();
+    isSelected.clear();
+    requirements.clear();
+    requirementList.clear();
+    requirementList.value = [
+      ...projectInfo["productBacklogs"][0]["requirements"] as List
+    ];
+    if (requirementList.value.isNotEmpty) {
+      for (int i = 0; i < requirementList.value.length; i++) {
+        isSelected.value.add(false.obs);
+
+        requirements.add(
+          Requirement(
+            codigo: (i > 9) ? "RF$i" : "RF0$i",
+            detalles: toBeginningOfSentenceCase(
+                requirementList.value[i]["actionDescription"].toString()),
+            fecha: DateTime.now(),
+            prioridad: "Alta",
+            puntos: 3,
+          ),
+        );
+      }
+    }
+  }
+
+  List<String> dropdownItems() {
+    final List<String> list = <String>[];
+    list.add("Seleccionar proyecto");
+    final projects = Get.find<ProjectsController>().projects;
+    for (final dynamic p in projects) {
+      if (p["id"] != projectInfo["id"]) list.add(p["projectName"].toString());
+    }
+    return list;
+  }
+
+  void getSelectedProjectId() {
+    final projects = Get.find<ProjectsController>().projects;
+    for (final dynamic p in projects) {
+      if (p["projectName"] == selectedProjectName.value) {
+        selectedProjectid.value = p["id"].toString();
+      }
     }
   }
 

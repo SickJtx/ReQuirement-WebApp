@@ -35,7 +35,7 @@ class ProjectsController extends GetxController {
   final visibilidadProyecto = "Público".obs;
 
   final RxList<dynamic> tags = [].obs;
-  final RxList<dynamic> productBacklog = [].obs;
+  //final RxList<dynamic> productBacklog = [].obs;
 
   final RxList<dynamic> projects = [].obs;
   final RxList<dynamic> marketType = [].obs;
@@ -51,7 +51,6 @@ class ProjectsController extends GetxController {
   final mkid = 0.obs;
 
   GlobalKey<FormState> projectsStep1FormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> projectsStep2FormKey = GlobalKey<FormState>();
 
   final RxBool autoGenerate = false.obs;
 
@@ -61,6 +60,19 @@ class ProjectsController extends GetxController {
   final logger = Logger(
     printer: PrettyPrinter(),
   );
+
+  void clearForms() {
+    tipoMercado.value = "Seleccionar tipo";
+    projectNameController.text = "";
+    tagNameController.text = "";
+    tags.clear();
+    //productBacklog.clear();
+    isSelected.clear();
+    selectedRequirements.clear();
+    qSelectedItems.value = 0;
+    autoGenerate.value = false;
+    step.value = 1;
+  }
 
   void newTag() {
     if (tagNameController.text != "") {
@@ -128,6 +140,7 @@ class ProjectsController extends GetxController {
 
   Future generateProject() async {
     generatedRequirements.clear();
+    isSelected.clear();
     generatorLoading.value = true;
     final String token = Get.find<SessionController>().token.value;
     dio.Response response;
@@ -138,6 +151,9 @@ class ProjectsController extends GetxController {
       if (response.statusCode == 201 || response.statusCode == 200) {
         generatedRequirements.value =
             response.data["productBacklogs"][0]["requirements"] as List;
+        for (int i = 0; i < generatedRequirements.value.length; i++) {
+          isSelected.value.add(false.obs);
+        }
         logger.i(response.data);
       } else {
         logger.i(response.statusCode);
@@ -154,7 +170,6 @@ class ProjectsController extends GetxController {
     final String token = Get.find<SessionController>().token.value;
     dio.Response response;
     getMkid();
-
     try {
       Get.back();
       response = await ProjectsProvider().createProject(
@@ -169,6 +184,7 @@ class ProjectsController extends GetxController {
           }
         ],
       );
+      clearForms();
       if (response.statusCode == 201 || response.statusCode == 200) {
         await getProjects();
         step.value = 1;
@@ -178,6 +194,7 @@ class ProjectsController extends GetxController {
       }
       loading.value = false;
     } on Exception catch (e) {
+      clearForms();
       loading.value = false;
       logger.e(e);
     }
@@ -251,20 +268,17 @@ class ProjectsController extends GetxController {
     return true;
   }
 
-  bool validTag() {
+  /* bool validTag() {
     final isValid = projectsStep2FormKey.currentState!.validate();
     if (!isValid) {
       return false;
     }
     projectsStep2FormKey.currentState!.save();
     return true;
-  }
+  } */
 
   @override
   void onInit() {
-    for (int i = 0; i < 60; i++) {
-      isSelected.value.add(false.obs);
-    }
     super.onInit();
   }
 

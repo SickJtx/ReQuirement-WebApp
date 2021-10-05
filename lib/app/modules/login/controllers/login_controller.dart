@@ -52,15 +52,14 @@ class LoginController extends GetxController {
     try {
       response = await LoginProvider()
           .getSession(usernameController.text, passwordController.text);
-      logger.i(response.data);
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        logger.i(response.data);
-
         token.value = response.data["access_token"].toString();
 
         await getUserId();
         await setPrefs();
+
+        await Get.find<ProfileController>().getUserInfo();
         await Get.find<HomeController>().getProjects();
         await Get.find<ProjectsController>().getProjects();
         await Get.find<ProjectsController>().getMarketTypes();
@@ -80,28 +79,9 @@ class LoginController extends GetxController {
   }
 
   Future getSesionWithPrefs(String username, String password) async {
-    dio.Response response;
-    try {
-      response = await LoginProvider().getSession(username, password);
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        logger.i(response.data);
-
-        token.value = response.data["access_token"].toString();
-        Get.find<SessionController>().token.value = token.value;
-        await getUserId();
-
-        Get.find<NavbarController>().startSesion();
-
-        Get.toNamed("/home");
-      } else {
-        logger.i(response.statusCode);
-      }
-    } on Exception catch (e) {
-      logger.e(e);
-    }
-    final ctrl = Get.find<NavbarController>();
-    ctrl.startSesion();
-    Get.toNamed("/home");
+    usernameController.text = username;
+    passwordController.text = password;
+    await getSesion();
   }
 
   Future getUserId() async {
@@ -113,10 +93,6 @@ class LoginController extends GetxController {
 
         Get.find<SessionController>().setTokenUid(
             userId: response.data["userId"].toString(), token: token.value);
-
-        Get.put(ProfileController());
-
-        await Get.find<ProfileController>().getUserInfo();
       } else {
         logger.i(response.statusCode);
       }

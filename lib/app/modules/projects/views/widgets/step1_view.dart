@@ -24,8 +24,8 @@ class Step1 extends GetView<ProjectsController> {
       child: Container(
         width: screenSize.width * 4 / 7,
         height: screenSize.width < 950
-            ? screenSize.height * 3.3 / 6
-            : screenSize.height * 2.3 / 6,
+            ? screenSize.height * 3.6 / 6
+            : screenSize.height * 2.6 / 6,
         constraints: BoxConstraints(
             minHeight: screenSize.width < 950 ? 330 : 230, maxHeight: 500),
         //height: screenSize.height * 3 / 5,
@@ -164,6 +164,7 @@ class Step1 extends GetView<ProjectsController> {
                   OutlinedButton(
                     onPressed: () {
                       Get.back();
+                      controller.clearForms();
                     },
                     style: OutlinedButton.styleFrom(
                       primary: Colors.red,

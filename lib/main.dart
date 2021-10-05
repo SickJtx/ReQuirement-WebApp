@@ -8,6 +8,7 @@ import 'package:re_quirement/app/modules/projects/controllers/projects_controlle
 import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 
 import 'app/modules/home/controllers/home_controller.dart';
+import 'app/modules/profile/controllers/profile_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/utils/constants/styles.dart';
 import 'app/utils/controllers/navbar_controller.dart';
@@ -20,6 +21,7 @@ void main() {
   Get.put(LoginController());
   Get.put(HomeController());
   Get.put(ProjectsController());
+  Get.put(ProfileController());
   Get.put(MyProjectDetailsController());
   runApp(
     GetMaterialApp(

@@ -54,8 +54,9 @@ class ProjectsProvider {
         "tags": tags,
         "productBacklogs": productBacklogs
       });
-    } catch (e) {
-      logger.e(e);
+      logger.d(response);
+    } on DioError catch (e) {
+      logger.e(e.response);
       throw Exception(e);
     }
 
@@ -71,8 +72,8 @@ class ProjectsProvider {
 
     try {
       response = await _dio.post("/project/generate?marketTypeId=$mkid");
-    } catch (e) {
-      logger.e(e);
+    } on DioError catch (e) {
+      logger.e(e.response);
       throw Exception(e);
     }
 
