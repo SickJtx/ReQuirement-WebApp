@@ -27,4 +27,23 @@ class MarketTypeProvider {
 
     return response;
   }
+  Future<Response> getAvaliableMarketTypes({
+    required String token,
+  }) async {
+    final _dio = Dio();
+    final Response response;
+    _dio.options.headers = {"Authorization": "Bearer $token"};
+    _dio.options.baseUrl = HttpInfo.url;
+
+    try {
+      response = await _dio.get(
+        "/generated-project-available",
+      );
+    } catch (e) {
+      logger.e(e);
+      throw Exception(e);
+    }
+
+    return response;
+  }
 }

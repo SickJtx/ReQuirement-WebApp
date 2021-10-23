@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:re_quirement/app/modules/profile/controllers/profile_controller.dart';
 
-class ProfileItem extends StatelessWidget {
+class ProfileItem extends GetView<ProfileController> {
   const ProfileItem({
     Key? key,
     required this.itemLabel,
-    required this.controller,
+    required this.textController,
     required this.editor,
+    required this.onChange,
+    required this.infoLabel,
   }) : super(key: key);
+
   final String itemLabel;
-  final TextEditingController controller;
+  final void Function(String) onChange;
+  final String infoLabel;
+  final TextEditingController textController;
   final bool editor;
   @override
   Widget build(BuildContext context) {
@@ -21,7 +28,7 @@ class ProfileItem extends StatelessWidget {
         children: [
           Text(
             itemLabel,
-            style: GoogleFonts.roboto(fontWeight: FontWeight.w500),
+            style: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
           ),
           const SizedBox(
             height: 14,
@@ -32,19 +39,27 @@ class ProfileItem extends StatelessWidget {
               border: Border.all(color: Colors.black54),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(.1),
-                    offset: const Offset(0, 40),
-                    blurRadius: 80),
+                  color: Colors.black.withOpacity(.1),
+                  offset: const Offset(0, 40),
+                  blurRadius: 80,
+                ),
               ],
             ),
             child: Container(
               width: screenSize.width * 4 / 14,
               padding: const EdgeInsets.only(left: 8),
-              child: TextField(
-                enabled: editor,
-                controller: controller,
-                decoration: const InputDecoration(border: InputBorder.none),
-              ),
+              child: editor
+                  ? Text(
+                      infoLabel,
+                      style: GoogleFonts.roboto(),
+                    )
+                  : TextField(
+                      onChanged: onChange,
+                      enabled: editor,
+                      controller: textController,
+                      decoration:
+                          const InputDecoration(border: InputBorder.none),
+                    ),
             ),
           ),
         ],

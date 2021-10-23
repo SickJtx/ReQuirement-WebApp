@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
 
 class RequirementItem extends StatelessWidget {
@@ -49,7 +50,64 @@ class RequirementItem extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  Get.defaultDialog();
+                  Get.defaultDialog(
+                      title: "Detalles",
+                      content: SizedBox(
+                        width: screenSize.width * 2 / 3,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Actor: ",
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w500)),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(requirement.actor!,
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w400)),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text("Descripción: ",
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w500)),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(requirement.detalles!,
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w400)),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text("Objetivo: ",
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w500)),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(requirement.goal!,
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w400)),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text("Tipo: ",
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w500)),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(requirement.type!,
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                        ),
+                      ));
                 },
                 icon: const Icon(
                   Icons.visibility_outlined,

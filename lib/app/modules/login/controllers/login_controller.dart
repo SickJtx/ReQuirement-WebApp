@@ -20,8 +20,18 @@ class LoginController extends GetxController {
   final Rx<String> token = "".obs;
   final RxBool loading = false.obs;
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  GlobalKey<FormState> loginFormKey = new GlobalKey<FormState>();
+
+  late TextEditingController usernameController, passwordController;
+
+  String username = '';
+  String password = '';
+  @override
+  void onInit() {
+    super.onInit();
+    usernameController = TextEditingController();
+    passwordController = TextEditingController();
+  }
 
   Future setPrefs() async {
     final ctrl = Get.find<SessionController>();
@@ -29,6 +39,8 @@ class LoginController extends GetxController {
 
     if (keepOnline.value) {
       prefs.setBool("active", true);
+    } else {
+      prefs.setBool("active", false);
     }
     prefs.setString("username", usernameController.text);
     prefs.setString("password", passwordController.text);
@@ -42,18 +54,18 @@ class LoginController extends GetxController {
     try {
       response = await LoginProvider()
           .getSession(usernameController.text, passwordController.text);
-      logger.i(response.data);
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        logger.i(response.data);
-
         token.value = response.data["access_token"].toString();
 
         await getUserId();
         await setPrefs();
+
+        await Get.find<ProfileController>().getUserInfo();
         await Get.find<HomeController>().getProjects();
         await Get.find<ProjectsController>().getProjects();
         await Get.find<ProjectsController>().getMarketTypes();
+        await Get.find<ProjectsController>().getAvaiableMarketTypes();
         final ctrl = Get.find<NavbarController>();
         ctrl.startSesion();
 
@@ -68,29 +80,20 @@ class LoginController extends GetxController {
     }
   }
 
-  Future getSesionWithPrefs(String username, String password) async {
-    dio.Response response;
-    try {
-      response = await LoginProvider().getSession(username, password);
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        logger.i(response.data);
+  Future getSesionWithPrefs() async {
+    loading.value = true;
+    await getUserId();
+    await setPrefs();
 
-        token.value = response.data["access_token"].toString();
-        Get.find<SessionController>().token.value = token.value;
-        await getUserId();
-
-        Get.find<NavbarController>().startSesion();
-
-        Get.toNamed("/home");
-      } else {
-        logger.i(response.statusCode);
-      }
-    } on Exception catch (e) {
-      logger.e(e);
-    }
+    await Get.find<ProfileController>().getUserInfo();
+    await Get.find<HomeController>().getProjects();
+    await Get.find<ProjectsController>().getProjects();
+    await Get.find<ProjectsController>().getMarketTypes();
+    await Get.find<ProjectsController>().getAvaiableMarketTypes();
     final ctrl = Get.find<NavbarController>();
     ctrl.startSesion();
-    Get.toNamed("/home");
+
+    loading.value = false;
   }
 
   Future getUserId() async {
@@ -102,10 +105,6 @@ class LoginController extends GetxController {
 
         Get.find<SessionController>().setTokenUid(
             userId: response.data["userId"].toString(), token: token.value);
-
-        Get.put(ProfileController());
-
-        await Get.find<ProfileController>().getUserInfo();
       } else {
         logger.i(response.statusCode);
       }
@@ -114,18 +113,45 @@ class LoginController extends GetxController {
     }
   }
 
-  /*
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   @override
   void onReady() {
     super.onReady();
   }
 
   @override
-  void onClose() {}
-  */
+  void onClose() {
+    usernameController.dispose();
+    passwordController.dispose();
+  }
+
+  String? validateEmail(String value) {
+    if (!GetUtils.isEmail(value)) {
+      return 'Email incorrecto';
+    }
+    return null;
+  }
+
+  String? validatePassword(String value) {
+    const String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    final regex = RegExp(pattern);
+    if (value.isEmpty) {
+      return 'Ingresar contraseña';
+    } else {
+      if (!regex.hasMatch(value)) {
+        return 'La contraseña debe tener al menos 8 caracteres y al menos una letra mayúscula, una letra minúscula, un número y un caracter especial';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  bool checkLogin() {
+    final isValid = loginFormKey.currentState!.validate();
+    if (!isValid) {
+      return false;
+    }
+    loginFormKey.currentState!.save();
+    return true;
+  }
 }
