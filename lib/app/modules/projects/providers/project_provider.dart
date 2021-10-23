@@ -79,4 +79,20 @@ class ProjectsProvider {
 
     return response;
   }
+
+  Future<Response> generateRequirements({required int mkid}) async {
+    final _dio = Dio();
+    final Response response;
+    _dio.options.baseUrl = HttpInfo.urlALgorithm;
+    logger.wtf("?marketTypeId=$mkid&clusters=5&iterations=1&translateTo=es");
+    try {
+      response = await _dio
+          .post("?marketTypeId=$mkid&clusters=5&iterations=1&translateTo=es");
+    } on DioError catch (e) {
+      logger.e(e.response);
+      throw Exception(e);
+    }
+
+    return response;
+  }
 }

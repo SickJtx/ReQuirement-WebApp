@@ -20,6 +20,7 @@ abstract class Routes {
   static const MY_PROJECT_DETAILS = _Paths.MY_PROJECT_DETAILS;
 
   static const GENERATE_PROJECT = _Paths.GENERATE_PROJECT;
+  static const MAIN = _Paths.MAIN;
 }
 
 abstract class _Paths {
@@ -39,4 +40,5 @@ abstract class _Paths {
   static const MY_PROJECT_DETAILS = '/my-project-details';
 
   static const GENERATE_PROJECT = '/generate-project';
+  static const MAIN = '/main';
 }

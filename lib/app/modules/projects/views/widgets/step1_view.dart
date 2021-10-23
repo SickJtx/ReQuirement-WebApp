@@ -186,7 +186,7 @@ class Step1 extends GetView<ProjectsController> {
                               AppLocalizations.of(context)!.selectTypeStep1) {
                         if (controller.autoGenerate.value) {
                           controller.step.value = 2;
-                          await controller.generateProject();
+                          await controller.generateRequirements();
                         } else {
                           controller.step.value = 3;
                         }

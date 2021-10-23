@@ -92,7 +92,12 @@ class ProjectsController extends GetxController {
   List<dynamic> getSelectedRequirements() {
     final List<dynamic> selectedRequirementList = [];
     for (final int i in selectedRequirements) {
-      selectedRequirementList.add(generatedRequirements[i]);
+      selectedRequirementList.add({
+        "systemDescription": "System",
+        "actorDescription": "Actor",
+        "actionDescription": generatedRequirements[i],
+        "requirementType": "FUNCTIONAL"
+      });
     }
     return selectedRequirementList;
   }
@@ -138,7 +143,31 @@ class ProjectsController extends GetxController {
     }
   }
 
-  Future generateProject() async {
+  Future generateRequirements() async {
+    generatedRequirements.clear();
+    isSelected.clear();
+    generatorLoading.value = true;
+    dio.Response response;
+    getMkid();
+    try {
+      response =
+          await ProjectsProvider().generateRequirements(mkid: mkid.value);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        generatedRequirements.value = response.data["data"] as List;
+        for (int i = 0; i < generatedRequirements.value.length; i++) {
+          isSelected.value.add(false.obs);
+        }
+        logger.i(response.data);
+      } else {
+        logger.i(response.statusCode);
+      }
+      generatorLoading.value = false;
+    } on Exception catch (e) {
+      generatorLoading.value = false;
+      logger.e(e);
+    }
+  }
+  /* Future generateProject() async {
     generatedRequirements.clear();
     isSelected.clear();
     generatorLoading.value = true;
@@ -163,7 +192,7 @@ class ProjectsController extends GetxController {
       generatorLoading.value = false;
       logger.e(e);
     }
-  }
+  } */
 
   Future createProject() async {
     loading.value = true;

@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
 import 'package:re_quirement/app/utils/constants/styles.dart';
+import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
+import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 
 import '../controllers/home_controller.dart';
@@ -14,8 +16,10 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
+    //Get.find<SessionController>().loadSharedPreferences();
     final screenSize = MediaQuery.of(context).size;
     final df = DateFormat('dd-MM-yyyy');
+    Get.find<NavbarController>().showCurrent();
     return WillPopScope(
       onWillPop: () async {
         return false;

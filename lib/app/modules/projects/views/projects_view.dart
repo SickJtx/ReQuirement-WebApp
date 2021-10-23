@@ -8,6 +8,7 @@ import 'package:re_quirement/app/modules/my_project_details/controllers/my_proje
 import 'package:re_quirement/app/modules/projects/views/widgets/step1_view.dart';
 import 'package:re_quirement/app/modules/projects/views/widgets/step3_view.dart';
 import 'package:re_quirement/app/utils/constants/styles.dart';
+import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
 
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 
@@ -19,6 +20,7 @@ class ProjectsView extends GetView<ProjectsController> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final df = DateFormat('dd-MM-yyyy');
+    Get.find<NavbarController>().showCurrent();
     return WillPopScope(
       onWillPop: () async {
         return false;

@@ -7,15 +7,20 @@ import 'package:re_quirement/app/modules/projects/controllers/projects_controlle
 import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 
 class Requirement {
-  Requirement({
-    required this.codigo,
-    required this.detalles,
-    required this.prioridad,
-    required this.fecha,
-    required this.puntos,
-  });
+  Requirement(
+      {required this.codigo,
+      required this.detalles,
+      required this.prioridad,
+      required this.fecha,
+      required this.puntos,
+      required this.actor,
+      required this.goal,
+      required this.type});
 
   final String? detalles;
+  final String? actor;
+  final String? goal;
+  final String? type;
   final String? prioridad;
   final DateTime? fecha;
   final int? puntos;
@@ -24,6 +29,7 @@ class Requirement {
 
 class MyProjectDetailsController extends GetxController {
   //TODO: Implement MyProjectDetailsController
+
   final editor = false.obs;
   final RxBool loading = true.obs;
   final logger = Logger(
@@ -36,6 +42,7 @@ class MyProjectDetailsController extends GetxController {
   final projectName = "".obs;
   final projectMarketTypeName = "".obs;
   final visibility = "".obs;
+  final userOwnerId = "".obs;
   final tags = [].obs;
 
   final qSelectedItems = 0.obs;
@@ -62,6 +69,7 @@ class MyProjectDetailsController extends GetxController {
     visibility.value = projectInfo["visibility"].toString() == "PUBLIC"
         ? "Público"
         : "Privado";
+    userOwnerId.value = projectInfo["profileUserId"].toString();
     logger.wtf(projectInfo["tags"]);
     tags.value = projectInfo["tags"] as List;
   }
@@ -145,6 +153,15 @@ class MyProjectDetailsController extends GetxController {
             fecha: DateTime.now(),
             prioridad: "Alta",
             puntos: 3,
+            actor: requirementList.value[i]["actorDescription"].toString(),
+            goal: requirementList.value[i]["detailsDescription"].toString() ==
+                    "null"
+                ? "No definido"
+                : requirementList.value[i]["detailsDescription"].toString(),
+            type: requirementList.value[i]["requirementType"].toString() ==
+                    "FUNCTIONAL"
+                ? "Funcional"
+                : "No Funcional",
           ),
         );
       }

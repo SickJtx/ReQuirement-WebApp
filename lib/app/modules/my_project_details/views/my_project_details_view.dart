@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:re_quirement/app/modules/my_project_details/views/widgets/requirement_clone_widget.dart';
+import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
+import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 import 'package:re_quirement/app/utils/widgets/labeled_item.dart';
 import 'package:re_quirement/app/utils/widgets/tag_item.dart';
@@ -16,6 +18,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    Get.find<NavbarController>().showCurrent();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(screenSize.width, 1000),
@@ -128,6 +131,33 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                         width: 1,
                                       ),
                                     ),
+                                    if (controller.userOwnerId.value ==
+                                        Get.find<SessionController>()
+                                            .userId
+                                            .value)
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          Get.defaultDialog(
+                                              title: "Nuevo requisitos",
+                                              titleStyle:
+                                                  GoogleFonts.montserrat(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              barrierDismissible: false,
+                                              content:
+                                                  const RequirementCloneWidget());
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.green),
+                                        ),
+                                        child: const Text("Nuevo requisitos"),
+                                      ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
                                     ElevatedButton(
                                       onPressed: () async {
                                         Get.defaultDialog(
@@ -143,7 +173,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(
-                                                Colors.green),
+                                                Colors.orange),
                                       ),
                                       child: const Text("Clonar requisitos"),
                                     ),

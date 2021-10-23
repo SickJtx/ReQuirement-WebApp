@@ -70,8 +70,9 @@ class Step2 extends GetView<ProjectsController> {
                         itemCount:
                             controller.generatedRequirements.value.length,
                         itemBuilder: (context, index) {
-                          final dynamic map =
-                              controller.generatedRequirements[index];
+                          final String req = controller
+                              .generatedRequirements[index]
+                              .toString();
                           return Obx(
                             () => Container(
                               color: controller.isSelected.value[index].value
@@ -82,9 +83,7 @@ class Step2 extends GetView<ProjectsController> {
                                         .isSelected.value[index].value
                                     ? const Icon(Icons.check_circle)
                                     : const Icon(Icons.check_circle_outline),
-                                title: Text(
-                                    toBeginningOfSentenceCase(
-                                        map["actionDescription"].toString())!,
+                                title: Text(req,
                                     style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w400)),
                                 selected:
