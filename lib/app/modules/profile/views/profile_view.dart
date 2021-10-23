@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 
 import '../controllers/profile_controller.dart';
@@ -13,6 +14,7 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    Get.find<NavbarController>().showCurrent();
     return WillPopScope(
       onWillPop: () async {
         return false;

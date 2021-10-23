@@ -35,7 +35,7 @@ class DesktopNavbar extends GetView<NavbarController> {
             ),
             Obx(
               () => Expanded(
-                child: controller.onSesion.value
+                child: controller.currentIndex.value > 1
                     ? const SesionAppBar()
                     : const LoginAppBar(),
               ),

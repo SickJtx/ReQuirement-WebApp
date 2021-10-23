@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:stack/stack.dart' as stk;
 
 class NavbarController extends GetxController {
@@ -6,11 +7,14 @@ class NavbarController extends GetxController {
   final viewFlags = [false, true, true, false, false].obs;
 
   final stk.Stack<int> pila = stk.Stack();
-
+  final logger = Logger(
+    printer: PrettyPrinter(),
+  );
   final initiated = false.obs;
 
   final currentIndex = 1.obs;
   final previousIndex = 0.obs;
+  final path = "".obs;
 
   final onSesion = false.obs;
   final List<String> routes = [
@@ -29,14 +33,41 @@ class NavbarController extends GetxController {
     }
     Get.offAndToNamed(routes[index]);
 
+    path.value = Uri.base
+        .toString()
+        .replaceAll(Uri.base.origin, "")
+        .replaceAll("/#", "");
   }
 
   void startSesion() {
     viewFlags[currentIndex.value] = false;
     currentIndex.value = 2;
     onSesion.value = true;
+    path.value = routes[currentIndex.value];
     Get.offAndToNamed("/home");
     Get.offAndToNamed("/home");
+  }
+
+  void showCurrent() {
+    logger.wtf(currentIndex.value.toString() + path.value);
+    if (path.value == "") {
+      Get.toNamed("/login");
+      Get.toNamed("/login");
+    }
+  }
+
+  void getCurrentIndex() {
+    path.value = Uri.base
+        .toString()
+        .replaceAll(Uri.base.origin, "")
+        .replaceAll("/#", "");
+
+    for (int i = 0; i < 5; i++) {
+      viewFlags[i] = false;
+
+      if (routes[i] == path.value) currentIndex.value = i;
+    }
+    viewFlags[currentIndex.value] = true;
   }
 
   @override

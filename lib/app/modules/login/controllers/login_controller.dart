@@ -39,6 +39,8 @@ class LoginController extends GetxController {
 
     if (keepOnline.value) {
       prefs.setBool("active", true);
+    } else {
+      prefs.setBool("active", false);
     }
     prefs.setString("username", usernameController.text);
     prefs.setString("password", passwordController.text);
@@ -78,10 +80,20 @@ class LoginController extends GetxController {
     }
   }
 
-  Future getSesionWithPrefs(String username, String password) async {
-    usernameController.text = username;
-    passwordController.text = password;
-    await getSesion();
+  Future getSesionWithPrefs() async {
+    loading.value = true;
+    await getUserId();
+    await setPrefs();
+
+    await Get.find<ProfileController>().getUserInfo();
+    await Get.find<HomeController>().getProjects();
+    await Get.find<ProjectsController>().getProjects();
+    await Get.find<ProjectsController>().getMarketTypes();
+    await Get.find<ProjectsController>().getAvaiableMarketTypes();
+    final ctrl = Get.find<NavbarController>();
+    ctrl.startSesion();
+
+    loading.value = false;
   }
 
   Future getUserId() async {
