@@ -7,7 +7,7 @@ import 'package:re_quirement/app/modules/profile/user_profile_model.dart';
 import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 
 class ProfileController extends GetxController {
-  UserProfile user = UserProfile(
+  Rx<UserProfile> user = UserProfile(
     email: "empty".obs,
     firstName: "empty".obs,
     lastName: "empty".obs,
@@ -16,7 +16,7 @@ class ProfileController extends GetxController {
     primaryAddress: "empty".obs,
     secundaryAddress: "empty".obs,
     suscribed: false.obs,
-  );
+  ).obs;
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -25,52 +25,59 @@ class ProfileController extends GetxController {
   TextEditingController secundaryAddressController = TextEditingController();
   TextEditingController subscribedController = TextEditingController();
 
-  final editor = false.obs;
-
+  final RxBool editor = false.obs;
+  final RxBool loading = true.obs;
+  final data = {}.obs;
   final logger = Logger(
     printer: PrettyPrinter(),
   );
 
-  bool setView() {
-    firstNameController.text = user.firstName!.value;
-    lastNameController.text = user.lastName!.value;
-    emailController.text = user.email!.value;
-    primaryAddressController.text = user.primaryAddress!.value;
-    secundaryAddressController.text = user.secundaryAddress!.value;
-    subscribedController.text = user.suscribed!.value ? "Premium" : "Basic";
-    return true;
+  void setView() {
+    firstNameController.text = user.value.firstName!.value;
+    lastNameController.text = user.value.lastName!.value;
+    emailController.text = user.value.email!.value;
+    primaryAddressController.text = user.value.primaryAddress!.value;
+    secundaryAddressController.text = user.value.secundaryAddress!.value;
+    subscribedController.text =
+        user.value.suscribed!.value ? "Premium" : "Basic";
   }
 
   Future getUserInfo() async {
     final ctrl = Get.find<SessionController>();
+    loading.value = true;
     dio.Response response;
     try {
       response = await ProfileProvider()
           .getUserInfo(token: ctrl.token.value, uid: ctrl.userId.value);
       if (response.statusCode == 200) {
         logger.i(response.data);
+
         setUserFromJson(response.data as Map<String, dynamic>);
         setView();
       } else {
         logger.i(response.statusCode);
       }
+      loading.value = false;
     } on Exception catch (e) {
+      loading.value = false;
       logger.e(e);
     }
   }
 
   bool setUserFromJson(Map<String, dynamic> json) {
-    user.firstName!.value = json['firstName'] as String;
-    user.lastName!.value = json['lastName'] as String;
-    user.email!.value = json['email'] as String;
+    user.value.firstName!.value = json['firstName'] as String;
+    user.value.lastName!.value = json['lastName'] as String;
+    user.value.email!.value = json['email'] as String;
 
-    user.primaryAddress!.value = json['primaryAddress'] as String;
+    user.value.primaryAddress!.value = json['primaryAddress'] as String;
 
-    user.secundaryAddress!.value = json['secundaryAddress'] as String;
+    user.value.secundaryAddress!.value = json['secundaryAddress'] as String;
 
-    user.locationCode!.value = json['locationCode'] as String;
-    user.locationDescription!.value = json['locationDescription'] as String;
-    user.suscribed!.value = json['suscribed'] as bool;
+    user.value.locationCode!.value = json['locationCode'] as String;
+    user.value.locationDescription!.value =
+        json['locationDescription'] as String;
+    user.value.suscribed!.value = json['suscribed'] as bool;
+
     return true;
   }
 
