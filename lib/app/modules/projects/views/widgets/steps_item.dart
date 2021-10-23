@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StepsItem extends StatelessWidget {
-  const StepsItem({Key? key, required this.itemLabel, required this.child})
-      : super(key: key);
+  const StepsItem({
+    Key? key,
+    required this.itemLabel,
+    required this.child,
+    this.withBorder = true,
+  }) : super(key: key);
   final String itemLabel;
   final Widget child;
+  final bool withBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class StepsItem extends StatelessWidget {
         children: [
           Text(
             itemLabel,
-            style: GoogleFonts.roboto(fontWeight: FontWeight.w500),
+            style: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
           ),
           const SizedBox(
             height: 7,
@@ -27,13 +32,14 @@ class StepsItem extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             constraints: const BoxConstraints(minWidth: 250),
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(color: Colors.black54),
+              borderRadius: const BorderRadius.all(Radius.circular(13)),
+              border: withBorder ? Border.all(color: Colors.black54) : null,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(.1),
-                    offset: const Offset(0, 40),
-                    blurRadius: 80),
+                  color: Colors.black.withOpacity(.1),
+                  offset: const Offset(0, 40),
+                  blurRadius: 80,
+                ),
               ],
             ),
             child: child,

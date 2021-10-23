@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
 import 'package:re_quirement/app/modules/projects/views/widgets/step1_view.dart';
-import 'package:re_quirement/app/modules/projects/views/widgets/step2_view.dart';
+import 'package:re_quirement/app/modules/projects/views/widgets/step3_view.dart';
 import 'package:re_quirement/app/utils/constants/styles.dart';
+import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
 
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 
 import '../controllers/projects_controller.dart';
+import 'widgets/step2_view.dart';
 
 class ProjectsView extends GetView<ProjectsController> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final df = DateFormat('dd-MM-yyyy');
+    Get.find<NavbarController>().showCurrent();
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -57,8 +60,9 @@ class ProjectsView extends GetView<ProjectsController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "MIS PROYECTOS",
-                                      style: GoogleFonts.roboto(
+                                      AppLocalizations.of(context)!
+                                          .myProjectsProjects,
+                                      style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -70,10 +74,12 @@ class ProjectsView extends GetView<ProjectsController> {
                                     ElevatedButton(
                                       onPressed: () {
                                         Get.defaultDialog(
-                                          title: "Nuevo proyecto",
-                                          titleStyle: GoogleFonts.roboto(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
+                                          title: AppLocalizations.of(context)!
+                                              .newProjectProjects,
+                                          titleStyle: GoogleFonts.montserrat(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                           barrierDismissible: false,
                                           content: Obx(
                                             () => AnimatedSwitcher(
@@ -82,7 +88,9 @@ class ProjectsView extends GetView<ProjectsController> {
                                                   milliseconds: 500),
                                               child: controller.step.value == 1
                                                   ? const Step1()
-                                                  : const Step2(),
+                                                  : controller.step.value == 2
+                                                      ? const Step2()
+                                                      : const Step3(),
                                             ),
                                           ),
                                         );
@@ -90,11 +98,13 @@ class ProjectsView extends GetView<ProjectsController> {
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(
-                                                Colors.green),
+                                          Colors.green,
+                                        ),
                                       ),
                                       child: Text(
-                                        "Nuevo proyecto",
-                                        style: GoogleFonts.roboto(
+                                        AppLocalizations.of(context)!
+                                            .newProjectProjects,
+                                        style: GoogleFonts.montserrat(
                                           color: Colors.white,
                                         ),
                                       ),
@@ -108,45 +118,40 @@ class ProjectsView extends GetView<ProjectsController> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        "Proyecto",
+                                        AppLocalizations.of(context)!
+                                            .projectProjects,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Creación",
+                                        AppLocalizations.of(context)!
+                                            .creationProjects,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Tipo de Mercado",
+                                        AppLocalizations.of(context)!
+                                            .typeOfMarketProjects,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Visibilidad",
+                                        AppLocalizations.of(context)!
+                                            .visibilityProjects,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "#Requisitos",
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -154,9 +159,10 @@ class ProjectsView extends GetView<ProjectsController> {
                                     Expanded(
                                       flex: 2,
                                       child: Text(
-                                        "Acciones",
+                                        AppLocalizations.of(context)!
+                                            .actionsProjects,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -175,7 +181,8 @@ class ProjectsView extends GetView<ProjectsController> {
                               Obx(
                                 () => Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                    horizontal: 20,
+                                  ),
                                   height: 500,
                                   child: AnimatedList(
                                     key: controller.listKey,
@@ -186,18 +193,19 @@ class ProjectsView extends GetView<ProjectsController> {
                                       return SizeTransition(
                                         sizeFactor: animation,
                                         child: InkWell(
-                                          onTap: () async{
+                                          onTap: () async {
                                             Get.toNamed(
                                                 "/projects/my-project-details");
                                             await Get.find<
                                                     MyProjectDetailsController>()
                                                 .getProjectInfo(
-                                                    pid: map["id"].toString());
+                                              pid: map["id"].toString(),
+                                            );
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
-                                                vertical: 20),
-                                            //olor: Colors.red,
+                                              vertical: 20,
+                                            ),
                                             child: Row(
                                               children: [
                                                 Expanded(
@@ -205,7 +213,8 @@ class ProjectsView extends GetView<ProjectsController> {
                                                     map["projectName"]
                                                         .toString(),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
@@ -213,11 +222,15 @@ class ProjectsView extends GetView<ProjectsController> {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    df.format(DateTime.parse(
+                                                    df.format(
+                                                      DateTime.parse(
                                                         map["createdAt"]
-                                                            .toString())),
+                                                            .toString(),
+                                                      ),
+                                                    ),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -229,7 +242,8 @@ class ProjectsView extends GetView<ProjectsController> {
                                                             ["marketTypeName"]
                                                         .toString(),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -240,20 +254,15 @@ class ProjectsView extends GetView<ProjectsController> {
                                                     map["visibility"]
                                                                 .toString() ==
                                                             "PUBLIC"
-                                                        ? "Público"
-                                                        : "Privado",
+                                                        ? AppLocalizations.of(
+                                                                context)!
+                                                            .visibilityPublicProjects
+                                                        : AppLocalizations.of(
+                                                                context)!
+                                                            .visibilityPrivateProjects,
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Text(
-                                                    "0",
-                                                    textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -273,9 +282,15 @@ class ProjectsView extends GetView<ProjectsController> {
                                                         ),
                                                       ),
                                                       OutlinedButton(
-                                                        onPressed: () {
+                                                        onPressed: () async {
                                                           Get.toNamed(
                                                               "/projects/my-project-details");
+                                                          await Get.find<
+                                                                  MyProjectDetailsController>()
+                                                              .getProjectInfo(
+                                                            pid: map["id"]
+                                                                .toString(),
+                                                          );
                                                         },
                                                         style: OutlinedButton
                                                             .styleFrom(
@@ -285,8 +300,11 @@ class ProjectsView extends GetView<ProjectsController> {
                                                             color: active,
                                                           ),
                                                         ),
-                                                        child:
-                                                            const Text("Ver"),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .watchProjects,
+                                                        ),
                                                       ),
                                                       const Expanded(
                                                         child: SizedBox(
@@ -300,8 +318,11 @@ class ProjectsView extends GetView<ProjectsController> {
                                                               MaterialStateProperty
                                                                   .all(active),
                                                         ),
-                                                        child: const Text(
-                                                            "Clonar"),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .cloneProjects,
+                                                        ),
                                                       ),
                                                       const Expanded(
                                                         child: SizedBox(
@@ -313,18 +334,22 @@ class ProjectsView extends GetView<ProjectsController> {
                                                         style: ButtonStyle(
                                                           backgroundColor:
                                                               MaterialStateProperty
-                                                                  .all(Colors
-                                                                      .red),
+                                                                  .all(
+                                                            Colors.red,
+                                                          ),
                                                         ),
-                                                        child: const Text(
-                                                            "Eliminar"),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .eraseProjects,
+                                                        ),
                                                       ),
                                                       const Expanded(
                                                         flex: 2,
                                                         child: SizedBox(
                                                           width: 1,
                                                         ),
-                                                      )
+                                                      ),
                                                     ],
                                                   ),
                                                 ),

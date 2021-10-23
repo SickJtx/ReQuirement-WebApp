@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:re_quirement/app/modules/my_project_details/views/widgets/requirement_clone_widget.dart';
+import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
+import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 import 'package:re_quirement/app/utils/widgets/labeled_item.dart';
 import 'package:re_quirement/app/utils/widgets/tag_item.dart';
@@ -14,6 +18,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    Get.find<NavbarController>().showCurrent();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(screenSize.width, 1000),
@@ -50,32 +55,29 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                               height: 20,
                             ),
                             Text(
-                              controller.map["projectName"].toString(),
-                              style: GoogleFonts.roboto(
+                              controller.projectName.value,
+                              style: GoogleFonts.montserrat(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Wrap(
                               children: [
                                 LabeledItem(
-                                  itemLabel: "Tipo de mercado:",
+                                  itemLabel: AppLocalizations.of(context)!
+                                      .typeOfMarketProjectDetails,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      controller.map["marketType"]
-                                              ["marketTypeName"]
-                                          .toString(),
+                                      controller.projectMarketTypeName.value,
                                     ),
                                   ),
                                 ),
                                 LabeledItem(
-                                  itemLabel: "Visibilidad:",
+                                  itemLabel: AppLocalizations.of(context)!
+                                      .visibilityProjectDetails,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      controller.map["visibility"].toString() ==
-                                              "PUBLIC"
-                                          ? "Público"
-                                          : "Privado",
+                                      controller.visibility.value,
                                     ),
                                   ),
                                 ),
@@ -86,25 +88,30 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
-                                "Tags del proyecto",
-                                style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.w500),
+                                AppLocalizations.of(context)!
+                                    .projectTagsProjectDetails,
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Wrap(
-                                spacing: 10,
-                                children:
-                                    (controller.map["tags"] as List<dynamic>)
-                                        .map(
-                                  (e) {
-                                    return TagItem(
-                                      tag: e["tagDescription"].toString(),
-                                    );
-                                  },
-                                ).toList(),
-                              ),
+                            Obx(
+                              () => controller.tags.value.isEmpty
+                                  ? const SizedBox()
+                                  : Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Wrap(
+                                        spacing: 10,
+                                        children: (controller.tags.value).map(
+                                          (e) {
+                                            return TagItem(
+                                              tag: e["tagDescription"]
+                                                  .toString(),
+                                            );
+                                          },
+                                        ).toList(),
+                                      ),
+                                    ),
                             ),
                             SizedBox(
                               width: screenSize.width * 9 / 10,
@@ -113,10 +120,62 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Requisitos',
-                                      style: GoogleFonts.roboto(
+                                      AppLocalizations.of(context)!
+                                          .requirementsProjectDetails,
+                                      style: GoogleFonts.montserrat(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w400),
+                                    ),
+                                    const Expanded(
+                                      child: SizedBox(
+                                        width: 1,
+                                      ),
+                                    ),
+                                    if (controller.userOwnerId.value ==
+                                        Get.find<SessionController>()
+                                            .userId
+                                            .value)
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          Get.defaultDialog(
+                                              title: "Nuevo requisitos",
+                                              titleStyle:
+                                                  GoogleFonts.montserrat(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              barrierDismissible: false,
+                                              content:
+                                                  const RequirementCloneWidget());
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.green),
+                                        ),
+                                        child: const Text("Nuevo requisitos"),
+                                      ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Get.defaultDialog(
+                                            title: "Clonar requisitos",
+                                            titleStyle: GoogleFonts.montserrat(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            barrierDismissible: false,
+                                            content:
+                                                const RequirementCloneWidget());
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.orange),
+                                      ),
+                                      child: const Text("Clonar requisitos"),
                                     ),
                                   ],
                                 ),
@@ -129,20 +188,25 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                 height: 5,
                               ),
                             ),
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Wrap(
-                                  spacing: 15,
-                                  children: controller.requirements.map(
-                                    (e) {
-                                      return RequirementItem(
-                                        requirement: e,
-                                      );
-                                    },
-                                  ).toList(),
-                                ),
-                              ),
+                            Obx(
+                              () => controller.requirements.value.isEmpty
+                                  ? const SizedBox()
+                                  : Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Wrap(
+                                          spacing: 15,
+                                          children:
+                                              controller.requirements.value.map(
+                                            (e) {
+                                              return RequirementItem(
+                                                requirement: e,
+                                              );
+                                            },
+                                          ).toList(),
+                                        ),
+                                      ),
+                                    ),
                             ),
                           ],
                         ),

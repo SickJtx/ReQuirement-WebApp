@@ -39,7 +39,7 @@ class SignUpProvider {
           ));
       logger.i(response);
     } on DioError catch (e) {
-      logger.e(e);
+      logger.e(e.response);
       throw Exception(e);
     }
 

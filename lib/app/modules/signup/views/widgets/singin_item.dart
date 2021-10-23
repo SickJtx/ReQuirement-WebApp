@@ -21,7 +21,7 @@ class SigninItem extends StatelessWidget {
         children: [
           Text(
             itemLabel,
-            style: GoogleFonts.roboto(fontWeight: FontWeight.w500),
+            style: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
           ),
           const SizedBox(
             height: 14,
@@ -40,7 +40,7 @@ class SigninItem extends StatelessWidget {
             child: Container(
               width: screenSize.width * 4 / 14,
               padding: const EdgeInsets.only(left: 8),
-              child: TextField(
+              child: TextFormField(
                 controller: textController,
                 obscureText: obscure,
                 decoration: const InputDecoration(border: InputBorder.none),

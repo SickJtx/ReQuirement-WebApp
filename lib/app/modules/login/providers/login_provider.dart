@@ -22,8 +22,8 @@ class LoginProvider {
           'password': password,
         },
       );
-    } catch (e) {
-      logger.e(e);
+    } on DioError catch (e) {
+      logger.e(e.response);
       throw Exception(e);
     }
 

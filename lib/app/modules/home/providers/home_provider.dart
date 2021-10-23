@@ -22,8 +22,8 @@ class HomeProvider {
       response = await _dio.get(
         "/project?limit=$limit&page=$page",
       );
-    } catch (e) {
-      logger.e(e);
+    } on DioError catch (e) {
+      logger.e(e.response);
       throw Exception(e);
     }
 
