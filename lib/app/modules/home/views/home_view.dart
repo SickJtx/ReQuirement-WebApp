@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
 import 'package:re_quirement/app/utils/constants/styles.dart';
+import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
+import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 
 import '../controllers/home_controller.dart';
@@ -13,8 +16,10 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
+    //Get.find<SessionController>().loadSharedPreferences();
     final screenSize = MediaQuery.of(context).size;
     final df = DateFormat('dd-MM-yyyy');
+    Get.find<NavbarController>().showCurrent();
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -54,8 +59,9 @@ class HomeView extends GetView<HomeController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "PROYECTOS PÚBLICOS",
-                                      style: GoogleFonts.roboto(
+                                      AppLocalizations.of(context)!
+                                          .publicProjectsText,
+                                      style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -68,45 +74,30 @@ class HomeView extends GetView<HomeController> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        "Proyecto",
+                                        AppLocalizations.of(context)!
+                                            .projectTextHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Creación",
+                                        AppLocalizations.of(context)!
+                                            .createTextHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Tipo de Mercado",
+                                        AppLocalizations.of(context)!
+                                            .typeOfMarketHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "Visibilidad",
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "#Requisitos",
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -114,9 +105,10 @@ class HomeView extends GetView<HomeController> {
                                     Expanded(
                                       flex: 2,
                                       child: Text(
-                                        "Acciones",
+                                        AppLocalizations.of(context)!
+                                            .actionsHome,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
+                                        style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -166,7 +158,8 @@ class HomeView extends GetView<HomeController> {
                                                     map["projectName"]
                                                         .toString(),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
@@ -178,7 +171,8 @@ class HomeView extends GetView<HomeController> {
                                                         map["createdAt"]
                                                             .toString())),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -190,89 +184,78 @@ class HomeView extends GetView<HomeController> {
                                                             ["marketTypeName"]
                                                         .toString(),
                                                     textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
                                                   ),
                                                 ),
                                                 Expanded(
-                                                  child: Text(
-                                                    map["visibility"]
-                                                                .toString() ==
-                                                            "PUBLIC"
-                                                        ? "Público"
-                                                        : "Privado",
-                                                    textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
+                                                  flex: 2,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      const Expanded(
+                                                        flex: 2,
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                      OutlinedButton(
+                                                        onPressed: () async {
+                                                          Get.toNamed(
+                                                              "/projects/my-project-details");
+                                                          await Get.find<
+                                                                  MyProjectDetailsController>()
+                                                              .getProjectInfo(
+                                                            pid: map["id"]
+                                                                .toString(),
+                                                          );
+                                                        },
+                                                        style: OutlinedButton
+                                                            .styleFrom(
+                                                          primary: active,
+                                                          side:
+                                                              const BorderSide(
+                                                            color: active,
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .watchHome,
+                                                        ),
+                                                      ),
+                                                      const Expanded(
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {},
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(active),
+                                                        ),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .cloneHome,
+                                                        ),
+                                                      ),
+                                                      const Expanded(
+                                                        flex: 2,
+                                                        child: SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                                Expanded(
-                                                  child: Text(
-                                                    "0",
-                                                    textAlign: TextAlign.center,
-                                                    style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                    flex: 2,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        const Expanded(
-                                                          flex: 2,
-                                                          child: SizedBox(
-                                                            width: 1,
-                                                          ),
-                                                        ),
-                                                        OutlinedButton(
-                                                          onPressed: () {
-                                                            Get.toNamed(
-                                                                "/projects/my-project-details");
-                                                          },
-                                                          style: OutlinedButton
-                                                              .styleFrom(
-                                                            primary: active,
-                                                            side:
-                                                                const BorderSide(
-                                                                    color:
-                                                                        active),
-                                                          ),
-                                                          child:
-                                                              const Text("Ver"),
-                                                        ),
-                                                        const Expanded(
-                                                          child: SizedBox(
-                                                            width: 1,
-                                                          ),
-                                                        ),
-                                                        ElevatedButton(
-                                                          onPressed: () {},
-                                                          style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(
-                                                                        active),
-                                                          ),
-                                                          child: const Text(
-                                                              "Clonar"),
-                                                        ),
-                                                        const Expanded(
-                                                          flex: 2,
-                                                          child: SizedBox(
-                                                            width: 1,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )),
                                               ],
                                             ),
                                           ),
