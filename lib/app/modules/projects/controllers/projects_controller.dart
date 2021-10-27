@@ -34,12 +34,15 @@ class ProjectsController extends GetxController {
   final tipoMercado = "Seleccionar tipo".obs;
   final visibilidadProyecto = "Público".obs;
 
-  final RxList<dynamic> tags = [].obs;
+  final RxList<dynamic> newTags = [].obs;
   //final RxList<dynamic> productBacklog = [].obs;
 
   final RxList<dynamic> projects = [].obs;
   final RxList<dynamic> marketType = [].obs;
+  final RxList<dynamic> tags = [].obs;
   final RxList<dynamic> avaiableMarketType = [].obs;
+
+  final qProjects = 0.obs;
 
   final RxList<RxBool> isSelected = <RxBool>[].obs;
   final RxList<int> selectedRequirements = <int>[].obs;
@@ -65,7 +68,7 @@ class ProjectsController extends GetxController {
     tipoMercado.value = "Seleccionar tipo";
     projectNameController.text = "";
     tagNameController.text = "";
-    tags.clear();
+    newTags.clear();
     //productBacklog.clear();
     isSelected.clear();
     selectedRequirements.clear();
@@ -75,12 +78,25 @@ class ProjectsController extends GetxController {
   }
 
   void newTag() {
+    bool added = false;
+    int id = 0;
     if (tagNameController.text != "") {
-      tags.add({'tagDescription': tagNameController.text});
+      for (final dynamic i in tags) {
+        if (tagNameController.text == i["tagDescription"].toString()) {
+          id = i["id"] as int;
+          added = true;
+        }
+      }
+      if (added) {
+        newTags.add({'tagDescription': tagNameController.text, 'id': id});
+      } else {
+        newTags.add({'tagDescription': tagNameController.text});
+      }
       tagNameController.text = "";
     }
   }
 
+/*  */
   void getMkid() {
     for (final dynamic mt in marketType) {
       if (mt["marketTypeName"].toString() == tipoMercado.value) {
@@ -131,6 +147,7 @@ class ProjectsController extends GetxController {
       if (response.statusCode == 201 || response.statusCode == 200) {
         projects.clear();
         projects.value = response.data["results"] as List;
+        qProjects.value = projects.value.length;
         update();
         logger.i(response.data);
       } else {
@@ -204,7 +221,7 @@ class ProjectsController extends GetxController {
       response = await ProjectsProvider().createProject(
         token: token,
         mkid: mkid.value,
-        tags: tags,
+        tags: newTags,
         projectName: projectNameController.text,
         productBacklogs: [
           {
@@ -216,6 +233,7 @@ class ProjectsController extends GetxController {
       clearForms();
       if (response.statusCode == 201 || response.statusCode == 200) {
         await getProjects();
+        await getTags();
         step.value = 1;
         logger.i(response.data);
       } else {
@@ -240,6 +258,52 @@ class ProjectsController extends GetxController {
       );
       if (response.statusCode == 201 || response.statusCode == 200) {
         marketType.value = response.data as List;
+
+        logger.i(response.data);
+      } else {
+        logger.i(response.statusCode);
+      }
+      loading.value = false;
+    } on Exception catch (e) {
+      loading.value = false;
+      logger.e(e);
+    }
+  }
+
+  Future deleteProject(int id) async {
+    loading.value = true;
+
+    final String token = Get.find<SessionController>().token.value;
+    dio.Response response;
+    try {
+      response = await ProjectsProvider().deleteProjects(
+        token: token,
+        projectId: id,
+      );
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        await getProjects();
+        logger.i(response.data);
+      } else {
+        logger.i(response.statusCode);
+      }
+      loading.value = false;
+    } on Exception catch (e) {
+      loading.value = false;
+      logger.e(e);
+    }
+  }
+
+  Future getTags() async {
+    tags.clear();
+    loading.value = true;
+    final String token = Get.find<SessionController>().token.value;
+    dio.Response response;
+    try {
+      response = await MarketTypeProvider().getTags(
+        token: token,
+      );
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        tags.value = response.data as List;
 
         logger.i(response.data);
       } else {

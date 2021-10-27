@@ -30,6 +30,27 @@ class ProjectsProvider {
     return response;
   }
 
+  Future<Response> deleteProjects({
+    required String token,
+    required int projectId,
+  }) async {
+    final _dio = Dio();
+    final Response response;
+    _dio.options.headers = {"Authorization": "Bearer $token"};
+    _dio.options.baseUrl = HttpInfo.url;
+
+    try {
+      response = await _dio.delete(
+        "/project/$projectId",
+      );
+    } catch (e) {
+      logger.e(e);
+      throw Exception(e);
+    }
+
+    return response;
+  }
+
   Future<Response> createProject(
       {required String token,
       List<dynamic> tags = const [],

@@ -69,7 +69,7 @@ class Step3 extends GetView<ProjectsController> {
             Obx(
               () => Wrap(
                 spacing: 10,
-                children: controller.tags.map(
+                children: controller.newTags.map(
                   (e) {
                     return TagItem(
                       tag: e["tagDescription"].toString(),
@@ -131,7 +131,7 @@ class Step3 extends GetView<ProjectsController> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (controller.tags.isNotEmpty) {
+                    if (controller.newTags.isNotEmpty) {
                       await controller.createProject();
                     }
                   },

@@ -27,6 +27,27 @@ class MarketTypeProvider {
 
     return response;
   }
+
+  Future<Response> getTags({
+    required String token,
+  }) async {
+    final _dio = Dio();
+    final Response response;
+    _dio.options.headers = {"Authorization": "Bearer $token"};
+    _dio.options.baseUrl = HttpInfo.url;
+
+    try {
+      response = await _dio.get(
+        "/tag",
+      );
+    } catch (e) {
+      logger.e(e);
+      throw Exception(e);
+    }
+
+    return response;
+  }
+
   Future<Response> getAvaliableMarketTypes({
     required String token,
   }) async {
