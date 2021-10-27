@@ -64,6 +64,7 @@ class LoginController extends GetxController {
         await Get.find<ProfileController>().getUserInfo();
         await Get.find<HomeController>().getProjects();
         await Get.find<ProjectsController>().getProjects();
+        await Get.find<ProjectsController>().getTags();
         await Get.find<ProjectsController>().getMarketTypes();
         await Get.find<ProjectsController>().getAvaiableMarketTypes();
         final ctrl = Get.find<NavbarController>();
@@ -89,6 +90,7 @@ class LoginController extends GetxController {
     await Get.find<HomeController>().getProjects();
     await Get.find<ProjectsController>().getProjects();
     await Get.find<ProjectsController>().getMarketTypes();
+    await Get.find<ProjectsController>().getTags();
     await Get.find<ProjectsController>().getAvaiableMarketTypes();
     final ctrl = Get.find<NavbarController>();
     ctrl.startSesion();

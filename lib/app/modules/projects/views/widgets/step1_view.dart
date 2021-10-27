@@ -70,10 +70,7 @@ class Step1 extends GetView<ProjectsController> {
                               isExpanded: true,
                               elevation: 16,
                               value: controller.tipoMercado.value,
-                              items: (controller.autoGenerate.value
-                                      ? controller.dropdownAvaiableItems()
-                                      : controller.dropdownItems())
-                                  .map(
+                              items: (controller.dropdownItems()).map(
                                 (value) {
                                   return DropdownMenuItem<String>(
                                     value: value,

@@ -330,19 +330,101 @@ class ProjectsView extends GetView<ProjectsController> {
                                                         ),
                                                       ),
                                                       ElevatedButton(
-                                                        onPressed: () {},
+                                                        onPressed: () {
+                                                          Get.defaultDialog(
+                                                            title: "Aviso",
+                                                            content: SizedBox(
+                                                              width: screenSize
+                                                                      .width *
+                                                                  2 /
+                                                                  3,
+                                                              child: Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        20),
+                                                                child: Column(
+                                                                  children: [
+                                                                    const Text(
+                                                                        "Si elimina el proyecto se perderá toda la información y no podrá ser recuperada. ¿Esta seguro de que desea borrar el proyecto?"),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceEvenly,
+                                                                      children: [
+                                                                        const Expanded(
+                                                                          flex:
+                                                                              2,
+                                                                          child:
+                                                                              SizedBox(
+                                                                            width:
+                                                                                1,
+                                                                          ),
+                                                                        ),
+                                                                        OutlinedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Get.back();
+                                                                          },
+                                                                          style:
+                                                                              OutlinedButton.styleFrom(
+                                                                            primary:
+                                                                                Colors.red,
+                                                                            //side: const BorderSide(color: Colors.red),
+                                                                          ),
+                                                                          child:
+                                                                              Text(AppLocalizations.of(context)!.cancelLabelStep3),
+                                                                        ),
+                                                                        const Expanded(
+                                                                          child:
+                                                                              SizedBox(
+                                                                            width:
+                                                                                1,
+                                                                          ),
+                                                                        ),
+                                                                        ElevatedButton(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            Get.back();
+                                                                            await controller.deleteProject(map["id"]
+                                                                                as int);
+                                                                          },
+                                                                          style:
+                                                                              ButtonStyle(
+                                                                            backgroundColor:
+                                                                                MaterialStateProperty.all(Colors.green),
+                                                                          ),
+                                                                          child:
+                                                                              const Text("Aceptar"),
+                                                                        ),
+                                                                        const Expanded(
+                                                                          flex:
+                                                                              2,
+                                                                          child:
+                                                                              SizedBox(width: 1),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
                                                         style: ButtonStyle(
                                                           backgroundColor:
                                                               MaterialStateProperty
-                                                                  .all(
-                                                            Colors.red,
-                                                          ),
+                                                                  .all(Colors
+                                                                      .red),
                                                         ),
                                                         child: Text(
-                                                          AppLocalizations.of(
-                                                                  context)!
-                                                              .eraseProjects,
-                                                        ),
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .eraseProjects),
                                                       ),
                                                       const Expanded(
                                                         flex: 2,
