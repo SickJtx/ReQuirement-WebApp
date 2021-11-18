@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LabeledItem extends StatelessWidget {
-  const LabeledItem({Key? key, required this.itemLabel, required this.child})
-      : super(key: key);
+class RequirementInput extends StatelessWidget {
+  const RequirementInput({
+    Key? key,
+    required this.itemLabel,
+    required this.child,
+    this.withBorder = true,
+  }) : super(key: key);
   final String itemLabel;
   final Widget child;
+  final bool withBorder;
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.all(10),
+      //margin: const EdgeInsets.all(5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -19,22 +24,20 @@ class LabeledItem extends StatelessWidget {
             itemLabel,
             style: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
           ),
-          const SizedBox(
-            height: 15,
-          ),
           Container(
             width: screenSize.width * 1.5 / 8,
-            height: screenSize.height * 0.45 / 8,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: screenSize.height * 0.5 / 8,
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             constraints: const BoxConstraints(minWidth: 250),
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(color: Colors.black54),
+              borderRadius: const BorderRadius.all(Radius.circular(13)),
+              border: withBorder ? Border.all(color: Colors.black54) : null,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(.1),
-                    offset: const Offset(0, 40),
-                    blurRadius: 80),
+                  color: Colors.black.withOpacity(.1),
+                  offset: const Offset(0, 40),
+                  blurRadius: 80,
+                ),
               ],
             ),
             child: child,

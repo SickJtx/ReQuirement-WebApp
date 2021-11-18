@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+
 import 'package:loading_indicator/loading_indicator.dart';
 
 import 'package:re_quirement/app/modules/projects/controllers/projects_controller.dart';
@@ -83,7 +84,7 @@ class Step2 extends GetView<ProjectsController> {
                                         .isSelected.value[index].value
                                     ? const Icon(Icons.check_circle)
                                     : const Icon(Icons.check_circle_outline),
-                                title: Text(req,
+                                title: Text(toBeginningOfSentenceCase(req)!,
                                     style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w400)),
                                 selected:
@@ -146,6 +147,7 @@ class Step2 extends GetView<ProjectsController> {
                         ElevatedButton(
                           onPressed: () {
                             controller.step.value = 1;
+                            controller.clearLists();
                           },
                           style: ButtonStyle(
                             backgroundColor:

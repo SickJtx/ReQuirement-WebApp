@@ -106,5 +106,15 @@
   "enterATagLabelStep3": "",
   "cancelLabelStep3": "Cancel",
   "backLabelStep3": "Back",
-  "finishLabelStep3": "Finish"
+  "finishLabelStep3": "Finish",
+
+  "asA":"As a(n):",
+  "iWant":"I want:",
+  "soThat":"So that:",
+  "typeDetailsProject":"Type:",
+  "detailDetailsProject":"Details",
+  "notDefined":"Not Defined",
+  "functionalReq":"Functional",
+  "nonFunctionalReq":"Non Functional",
+  "selectProject":"Select Project"
 }

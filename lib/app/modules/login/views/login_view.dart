@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:re_quirement/app/modules/projects/controllers/projects_controller.dart';
 import 'package:re_quirement/app/utils/constants/styles.dart';
 import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
+import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 import 'package:re_quirement/app/utils/widgets/custom_form_field.dart';
@@ -14,6 +17,8 @@ import '../controllers/login_controller.dart';
 class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
+    Get.find<SessionController>().myLocale = AppLocalizations.of(context);
+    Get.find<ProjectsController>().clearForms();
     final screenSize = MediaQuery.of(context).size;
     Get.find<NavbarController>().showCurrent();
     return WillPopScope(
@@ -162,6 +167,7 @@ class LoginView extends GetView<LoginController> {
                                     child: ElevatedButton(
                                       onPressed: () async {
                                         //controller.getUserId();
+
                                         if (controller.checkLogin()) {
                                           controller.getSesion();
                                         }

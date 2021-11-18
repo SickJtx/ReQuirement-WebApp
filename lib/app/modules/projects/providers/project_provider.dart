@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
@@ -67,7 +66,7 @@ class ProjectsProvider {
       "tags": tags,
       "productBacklogs": productBacklogs
     };
-    logger.wtf(a);
+
     try {
       response = await _dio.post("/project", data: {
         "projectName": projectName,
@@ -105,7 +104,7 @@ class ProjectsProvider {
     final _dio = Dio();
     final Response response;
     _dio.options.baseUrl = HttpInfo.urlALgorithm;
-    logger.wtf("?marketTypeId=$mkid&clusters=5&iterations=1&translateTo=es");
+
     try {
       response = await _dio
           .post("?marketTypeId=$mkid&clusters=5&iterations=1&translateTo=es");

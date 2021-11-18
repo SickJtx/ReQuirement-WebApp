@@ -8,7 +8,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:re_quirement/app/modules/my_project_details/controllers/my_project_details_controller.dart';
 import 'package:re_quirement/app/utils/constants/styles.dart';
 import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
-import 'package:re_quirement/app/utils/controllers/session_controller.dart';
+
 import 'package:re_quirement/app/utils/widgets/appbar/desktop_navbar.dart';
 
 import '../controllers/home_controller.dart';
@@ -103,7 +103,6 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 2,
                                       child: Text(
                                         AppLocalizations.of(context)!
                                             .actionsHome,
@@ -192,7 +191,6 @@ class HomeView extends GetView<HomeController> {
                                                   ),
                                                 ),
                                                 Expanded(
-                                                  flex: 2,
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -227,24 +225,6 @@ class HomeView extends GetView<HomeController> {
                                                           AppLocalizations.of(
                                                                   context)!
                                                               .watchHome,
-                                                        ),
-                                                      ),
-                                                      const Expanded(
-                                                        child: SizedBox(
-                                                          width: 1,
-                                                        ),
-                                                      ),
-                                                      ElevatedButton(
-                                                        onPressed: () {},
-                                                        style: ButtonStyle(
-                                                          backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all(active),
-                                                        ),
-                                                        child: Text(
-                                                          AppLocalizations.of(
-                                                                  context)!
-                                                              .cloneHome,
                                                         ),
                                                       ),
                                                       const Expanded(

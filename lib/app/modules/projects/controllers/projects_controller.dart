@@ -1,10 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:re_quirement/app/modules/projects/providers/market_type_provider.dart';
 import 'package:re_quirement/app/modules/projects/providers/project_provider.dart';
+import 'package:re_quirement/app/utils/constants/styles.dart';
 import 'package:re_quirement/app/utils/controllers/session_controller.dart';
+import 'package:re_quirement/app/utils/services/file_picker.dart';
 
 class AgileProject {
   AgileProject({
@@ -31,8 +35,8 @@ class ProjectsController extends GetxController {
 
   RxInt step = 1.obs;
 
-  final tipoMercado = "Seleccionar tipo".obs;
-  final visibilidadProyecto = "Público".obs;
+  final tipoMercado = "".obs;
+  final visibilidadProyecto = "".obs;
 
   final RxList<dynamic> newTags = [].obs;
   //final RxList<dynamic> productBacklog = [].obs;
@@ -57,15 +61,26 @@ class ProjectsController extends GetxController {
 
   final RxBool autoGenerate = false.obs;
 
+  final filePath = Uint8List(0).obs;
+  final FileUploader fileUploader = FileUploader();
+
   String projectName = '';
   String tagName = '';
 
   final logger = Logger(
     printer: PrettyPrinter(),
   );
+  void clearLists() {
+    newTags.clear();
+    isSelected.clear();
+    selectedRequirements.clear();
+    qSelectedItems.value = 0;
+  }
 
   void clearForms() {
-    tipoMercado.value = "Seleccionar tipo";
+    tipoMercado.value = Get.find<SessionController>().myLocale!.selectTypeStep1;
+    visibilidadProyecto.value =
+        Get.find<SessionController>().myLocale!.visibilityPublicStep1;
     projectNameController.text = "";
     tagNameController.text = "";
     newTags.clear();
@@ -120,7 +135,7 @@ class ProjectsController extends GetxController {
 
   List<String> dropdownItems() {
     final List<String> list = <String>[];
-    list.add("Seleccionar tipo");
+    list.add(Get.find<SessionController>().myLocale!.selectTypeStep1);
     for (final dynamic mt in marketType) {
       list.add(mt["marketTypeName"].toString());
     }
@@ -129,7 +144,7 @@ class ProjectsController extends GetxController {
 
   List<String> dropdownAvaiableItems() {
     final List<String> list = <String>[];
-    list.add("Seleccionar tipo");
+    list.add(Get.find<SessionController>().myLocale!.selectTypeStep1);
     for (final dynamic mt in avaiableMarketType) {
       list.add(mt["marketType"]["marketTypeName"].toString());
     }
@@ -236,14 +251,66 @@ class ProjectsController extends GetxController {
         await getTags();
         step.value = 1;
         logger.i(response.data);
+        Get.snackbar(
+          "Aviso",
+          "Proyecto creado correctamente",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
       } else {
         logger.i(response.statusCode);
+        Get.snackbar(
+          "Aviso",
+          "Ah ocurrido un error, revise los datos o intente más tarde",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
       }
       loading.value = false;
     } on Exception catch (e) {
       clearForms();
       loading.value = false;
       logger.e(e);
+    }
+  }
+
+  Future importProject() async {
+    loading.value = true;
+    final String token = Get.find<SessionController>().token.value;
+    dio.Response response;
+
+    final bool succes = await fileUploader.selectFile();
+
+    if (succes) {
+      try {
+        response = await fileUploader.importProject(token: token);
+        clearForms();
+        if (response.statusCode == 201 || response.statusCode == 200) {
+          await getProjects();
+          await getTags();
+          step.value = 1;
+          logger.i(response.data);
+          Get.snackbar(
+            "Aviso",
+            "Proyecto importando correctamente",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: active.withOpacity(0.5),
+          );
+        } else {
+          Get.snackbar(
+            "Aviso",
+            "Ocurrió un problema al importar el proyecto, revise el documento o intente más tarde",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: active.withOpacity(0.5),
+          );
+          logger.i(response.statusCode);
+        }
+        loading.value = false;
+      } on Exception catch (e) {
+        clearForms();
+        loading.value = false;
+        logger.e(e.toString());
+      }
     }
   }
 
@@ -283,7 +350,19 @@ class ProjectsController extends GetxController {
       if (response.statusCode == 201 || response.statusCode == 200) {
         await getProjects();
         logger.i(response.data);
+        Get.snackbar(
+          "Aviso",
+          "Se eliminó el proyecto",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
       } else {
+        Get.snackbar(
+          "Aviso",
+          "Ocurrió un problema, intente más tarde",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
         logger.i(response.statusCode);
       }
       loading.value = false;
@@ -339,14 +418,14 @@ class ProjectsController extends GetxController {
   }
 
   String? validateProjectName(String value) {
-    if (value.length <= 0) {
+    if (value.isEmpty) {
       return 'El nombre del proyecto no puede estar vacío';
     }
     return null;
   }
 
   String? validateTagName(String value) {
-    if (value.length <= 0) {
+    if (value.isEmpty) {
       return 'El nombre del tag no puede estar vacío';
     }
     return null;

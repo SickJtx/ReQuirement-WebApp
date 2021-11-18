@@ -100,7 +100,10 @@ class Step1 extends GetView<ProjectsController> {
                           isExpanded: true,
                           elevation: 16,
                           value: controller.visibilidadProyecto.value,
-                          items: const ["Público", "Privado"].map(
+                          items: [
+                            AppLocalizations.of(context)!.visibilityPublicStep1,
+                            AppLocalizations.of(context)!.visibilityPrivateStep1
+                          ].map(
                             (value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -131,7 +134,7 @@ class Step1 extends GetView<ProjectsController> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          controller.tipoMercado.value = "Seleccionar tipo";
+                          /* controller.tipoMercado.value = "Seleccionar tipo"; */
                           controller.autoGenerate.value =
                               !controller.autoGenerate.value;
                         },

@@ -10,6 +10,7 @@ class GenerateProjectController extends GetxController {
 
   final RxBool loading = false.obs;
   @override
+  // ignore: unnecessary_overrides
   void onInit() {
     super.onInit();
   }

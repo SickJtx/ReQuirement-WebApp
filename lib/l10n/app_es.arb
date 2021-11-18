@@ -106,5 +106,18 @@
   "enterATagLabelStep3": "",
   "cancelLabelStep3": "Cancelar",
   "backLabelStep3": "Atrás",
-  "finishLabelStep3": "Finalizar"
+  "finishLabelStep3": "Finalizar",
+
+  "visibilityPublic":"Publico",
+  "visibilityPrivate":"Privado",
+
+  "asA":"Como:",
+  "iWant":"Quiero:",
+  "soThat":"Para:",
+  "typeDetailsProject":"Tipo:",
+  "detailDetailsProject":"Detalles",
+  "notDefined":"No Definido",
+  "functionalReq":"Funcional",
+  "nonFunctionalReq":"No Funcional",
+  "selectProject":"Seleccionar Proyecto"
 }

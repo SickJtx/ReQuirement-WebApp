@@ -49,7 +49,7 @@ class NavbarController extends GetxController {
   }
 
   void showCurrent() {
-    logger.wtf(currentIndex.value.toString() + path.value);
+    
     if (path.value == "") {
       Get.toNamed("/login");
       Get.toNamed("/login");
