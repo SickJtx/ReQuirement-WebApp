@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:re_quirement/app/modules/signup/providers/singup_provider.dart';
+import 'package:re_quirement/app/utils/constants/styles.dart';
 import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
 
 class SignUpController extends GetxController {
@@ -16,7 +17,7 @@ class SignUpController extends GetxController {
 
   final RxBool loading = false.obs;
 
-  GlobalKey<FormState> signupFormKey =new GlobalKey<FormState>();
+  GlobalKey<FormState> signupFormKey = new GlobalKey<FormState>();
 
   String firstName = '';
   String lastName = '';
@@ -45,8 +46,20 @@ class SignUpController extends GetxController {
       );
       if (response.statusCode == 201 || response.statusCode == 200) {
         Get.find<NavbarController>().changePage(1);
+        Get.snackbar(
+          "Aviso",
+          "Cuenta creada correctamente",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
         logger.i(response.data);
       } else {
+        Get.snackbar(
+          "Aviso",
+          "Error al crear cuenta, revise la información ingresada/* s */",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
         logger.i(response.statusCode);
         loading.value = false;
       }
@@ -66,7 +79,8 @@ class SignUpController extends GetxController {
   }
 
   String? validateOnlyLetters(String value) {
-    if (!GetUtils.isAlphabetOnly(value)) {
+    final String aux = value.trim();
+    if (!GetUtils.isAlphabetOnly(aux)) {
       return 'Solo usar caracteres alfabéticos';
     }
     return null;

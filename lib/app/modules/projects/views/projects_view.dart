@@ -108,6 +108,13 @@ class ProjectsView extends GetView<ProjectsController> {
                                           color: Colors.white,
                                         ),
                                       ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () async {
+                                        await controller.importProject();
+                                      },
+                                      tooltip: "Importar de excel",
+                                      icon: const Icon(Icons.upload_outlined),
                                     )
                                   ],
                                 ),
@@ -157,7 +164,6 @@ class ProjectsView extends GetView<ProjectsController> {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 2,
                                       child: Text(
                                         AppLocalizations.of(context)!
                                             .actionsProjects,
@@ -269,7 +275,6 @@ class ProjectsView extends GetView<ProjectsController> {
                                                   ),
                                                 ),
                                                 Expanded(
-                                                  flex: 2,
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -304,24 +309,6 @@ class ProjectsView extends GetView<ProjectsController> {
                                                           AppLocalizations.of(
                                                                   context)!
                                                               .watchProjects,
-                                                        ),
-                                                      ),
-                                                      const Expanded(
-                                                        child: SizedBox(
-                                                          width: 1,
-                                                        ),
-                                                      ),
-                                                      ElevatedButton(
-                                                        onPressed: () {},
-                                                        style: ButtonStyle(
-                                                          backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all(active),
-                                                        ),
-                                                        child: Text(
-                                                          AppLocalizations.of(
-                                                                  context)!
-                                                              .cloneProjects,
                                                         ),
                                                       ),
                                                       const Expanded(

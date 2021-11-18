@@ -1,1 +1,6 @@
 include: package:lint/analysis_options.yaml
+
+linter:
+  rules:
+    invalid_use_of_protected_member: false 
+    unnecessary_overrides: false

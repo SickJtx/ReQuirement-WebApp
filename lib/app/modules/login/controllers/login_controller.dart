@@ -6,6 +6,7 @@ import 'package:re_quirement/app/modules/home/controllers/home_controller.dart';
 import 'package:re_quirement/app/modules/login/providers/login_provider.dart';
 import 'package:re_quirement/app/modules/profile/controllers/profile_controller.dart';
 import 'package:re_quirement/app/modules/projects/controllers/projects_controller.dart';
+import 'package:re_quirement/app/utils/constants/styles.dart';
 import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
 import 'package:re_quirement/app/utils/controllers/session_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +27,7 @@ class LoginController extends GetxController {
 
   String username = '';
   String password = '';
+
   @override
   void onInit() {
     super.onInit();
@@ -68,10 +70,24 @@ class LoginController extends GetxController {
         await Get.find<ProjectsController>().getMarketTypes();
         await Get.find<ProjectsController>().getAvaiableMarketTypes();
         final ctrl = Get.find<NavbarController>();
+
         ctrl.startSesion();
+
+        Get.snackbar(
+          "Aviso",
+          "Sesión iniciada correctamente",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
 
         loading.value = false;
       } else {
+        Get.snackbar(
+          "Error",
+          "Ah ocurrido un error, revise sus credenciales",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
         logger.i(response.statusCode);
         loading.value = false;
       }

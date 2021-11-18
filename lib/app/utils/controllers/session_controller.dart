@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
 import 'package:re_quirement/app/modules/login/controllers/login_controller.dart';
 import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
@@ -6,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionController extends GetxController {
   late final SharedPreferences prefs;
-
+  AppLocalizations? myLocale;
   final RxBool active = false.obs; //*Si hay una sesíon activa
   final RxString userId = "empty".obs;
   final RxString token = "empty".obs;

@@ -12,6 +12,7 @@ import 'package:re_quirement/app/utils/widgets/labeled_item.dart';
 import 'package:re_quirement/app/utils/widgets/tag_item.dart';
 
 import '../controllers/my_project_details_controller.dart';
+import 'widgets/new_requirement_widget.dart';
 import 'widgets/requirement_item.dart';
 
 class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
@@ -54,10 +55,28 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                             const SizedBox(
                               height: 20,
                             ),
-                            Text(
-                              controller.projectName.value,
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            Row(
+                              children: [
+                                Text(
+                                  controller.projectName.value,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                IconButton(
+                                  tooltip: "Export to excel",
+                                  onPressed: () {
+                                    controller.exportProject();
+                                  },
+                                  icon: const Icon(
+                                    Icons.download_outlined,
+                                  ),
+                                ),
+                                const Expanded(
+                                    child: SizedBox(
+                                  width: 0,
+                                ))
+                              ],
                             ),
                             Wrap(
                               children: [
@@ -138,15 +157,14 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                       ElevatedButton(
                                         onPressed: () async {
                                           Get.defaultDialog(
-                                              title: "Nuevo requisitos",
-                                              titleStyle:
-                                                  GoogleFonts.montserrat(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              barrierDismissible: false,
-                                              content:
-                                                  const RequirementCloneWidget());
+                                            title: "Nuevo requisitos",
+                                            titleStyle: GoogleFonts.montserrat(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            content:
+                                                const NewRequirementWidget(),
+                                          );
                                         },
                                         style: ButtonStyle(
                                           backgroundColor:
@@ -161,14 +179,15 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                     ElevatedButton(
                                       onPressed: () async {
                                         Get.defaultDialog(
-                                            title: "Clonar requisitos",
-                                            titleStyle: GoogleFonts.montserrat(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            barrierDismissible: false,
-                                            content:
-                                                const RequirementCloneWidget());
+                                          title: "Clonar requisitos",
+                                          titleStyle: GoogleFonts.montserrat(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          barrierDismissible: false,
+                                          content:
+                                              const RequirementCloneWidget(),
+                                        );
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
@@ -200,7 +219,7 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                               controller.requirements.value.map(
                                             (e) {
                                               return RequirementItem(
-                                                requirement: e,
+                                                requirement: e.obs,
                                               );
                                             },
                                           ).toList(),

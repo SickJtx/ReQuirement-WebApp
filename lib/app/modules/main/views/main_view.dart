@@ -8,7 +8,6 @@ import 'package:re_quirement/app/modules/projects/views/projects_view.dart';
 import 'package:re_quirement/app/modules/signup/views/signup_view.dart';
 import 'package:re_quirement/app/utils/controllers/navbar_controller.dart';
 
-import '../controllers/main_controller.dart';
 
 class MainView extends GetView<NavbarController> {
   @override
