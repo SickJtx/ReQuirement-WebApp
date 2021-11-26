@@ -109,13 +109,20 @@ class ProjectsView extends GetView<ProjectsController> {
                                         ),
                                       ),
                                     ),
-                                    IconButton(
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    ElevatedButton(
                                       onPressed: () async {
                                         await controller.importProject();
                                       },
-                                      tooltip: "Importar de excel",
-                                      icon: const Icon(Icons.upload_outlined),
-                                    )
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.orange),
+                                      ),
+                                      child: const Text("Importar de excel"),
+                                    ),
                                   ],
                                 ),
                               ),

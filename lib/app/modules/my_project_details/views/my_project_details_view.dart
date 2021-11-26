@@ -63,19 +63,24 @@ class MyProjectDetailsView extends GetView<MyProjectDetailsController> {
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                IconButton(
-                                  tooltip: "Export to excel",
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                ElevatedButton(
                                   onPressed: () {
                                     controller.exportProject();
                                   },
-                                  icon: const Icon(
-                                    Icons.download_outlined,
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.orange),
                                   ),
+                                  child: const Text("Export to excel"),
                                 ),
                                 const Expanded(
-                                    child: SizedBox(
-                                  width: 0,
-                                ))
+                                  child: SizedBox(
+                                    width: 0,
+                                  ),
+                                )
                               ],
                             ),
                             Wrap(
