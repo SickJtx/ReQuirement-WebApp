@@ -188,7 +188,7 @@ class MyProjectDetailsController extends GetxController {
       } else {
         Get.snackbar(
           "Aviso",
-          "Ah ocurrido un error, intentelo más tarde",
+          "Requisito agregado correctamente",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: active.withOpacity(0.5),
         );
@@ -197,6 +197,12 @@ class MyProjectDetailsController extends GetxController {
       }
       loading.value = false;
     } on Exception catch (e) {
+      Get.snackbar(
+        "Aviso",
+        "Ah ocurrido un error, intentelo más tarde",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: active.withOpacity(0.5),
+      );
       logger.e(e);
       Get.back();
       loading.value = false;
@@ -230,6 +236,12 @@ class MyProjectDetailsController extends GetxController {
       }
       loading.value = false;
     } on Exception catch (e) {
+      Get.snackbar(
+        "Aviso",
+        "Ah ocurrido un error, intentelo más tarde",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: active.withOpacity(0.5),
+      );
       logger.e(e);
       Get.back();
       loading.value = false;
@@ -257,7 +269,7 @@ class MyProjectDetailsController extends GetxController {
       } else {
         Get.snackbar(
           "Aviso",
-          "Ah ocurrido un error, intentelo más tarde",
+          "Se ah exportado el proyecto correctamente",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: active.withOpacity(0.5),
         );
@@ -265,6 +277,12 @@ class MyProjectDetailsController extends GetxController {
       }
       loading.value = false;
     } on Exception catch (e) {
+      Get.snackbar(
+        "Aviso",
+        "Ah ocurrido un error, intentelo más tarde",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: active.withOpacity(0.5),
+      );
       logger.e(e);
       loading.value = false;
     }
@@ -284,6 +302,7 @@ class MyProjectDetailsController extends GetxController {
       if (response.statusCode == 200) {
         logger.i(response.data);
         clearList();
+        Get.back();
         Get.snackbar(
           "Aviso",
           "Se clonaron los requisitos correctamente",
@@ -291,6 +310,7 @@ class MyProjectDetailsController extends GetxController {
           backgroundColor: active.withOpacity(0.5),
         );
       } else {
+        Get.back();
         Get.snackbar(
           "Aviso",
           "Se clonaron los requisitos correctamente",
@@ -298,9 +318,9 @@ class MyProjectDetailsController extends GetxController {
           backgroundColor: active.withOpacity(0.5),
         );
         logger.i(response.statusCode);
-        Get.back();
-        clearList();
       }
+      //Get.back();
+      clearList();
       loading.value = false;
     } on Exception catch (e) {
       Get.snackbar(

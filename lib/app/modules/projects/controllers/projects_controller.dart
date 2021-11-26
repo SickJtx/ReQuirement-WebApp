@@ -258,16 +258,22 @@ class ProjectsController extends GetxController {
           backgroundColor: active.withOpacity(0.5),
         );
       } else {
-        logger.i(response.statusCode);
         Get.snackbar(
           "Aviso",
-          "Ah ocurrido un error, revise los datos o intente más tarde",
+          "Proyecto creado correctamente",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: active.withOpacity(0.5),
         );
+        logger.i(response.statusCode);
       }
       loading.value = false;
     } on Exception catch (e) {
+      Get.snackbar(
+        "Aviso",
+        "Ah ocurrido un error, revise los datos o intente más tarde",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: active.withOpacity(0.5),
+      );
       clearForms();
       loading.value = false;
       logger.e(e);
@@ -297,19 +303,25 @@ class ProjectsController extends GetxController {
             backgroundColor: active.withOpacity(0.5),
           );
         } else {
+          logger.i(response.statusCode);
           Get.snackbar(
             "Aviso",
-            "Ocurrió un problema al importar el proyecto, revise el documento o intente más tarde",
+            "Proyecto importando correctamente",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: active.withOpacity(0.5),
           );
-          logger.i(response.statusCode);
         }
         loading.value = false;
       } on Exception catch (e) {
         clearForms();
         loading.value = false;
         logger.e(e.toString());
+        Get.snackbar(
+          "Aviso",
+          "Ocurrió un problema al importar el proyecto, revise el documento o intente más tarde",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: active.withOpacity(0.5),
+        );
       }
     }
   }
@@ -359,7 +371,7 @@ class ProjectsController extends GetxController {
       } else {
         Get.snackbar(
           "Aviso",
-          "Ocurrió un problema, intente más tarde",
+          "Se eliminó el proyecto",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: active.withOpacity(0.5),
         );
@@ -367,6 +379,12 @@ class ProjectsController extends GetxController {
       }
       loading.value = false;
     } on Exception catch (e) {
+      Get.snackbar(
+        "Aviso",
+        "Ocurrió un problema, intente más tarde",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: active.withOpacity(0.5),
+      );
       loading.value = false;
       logger.e(e);
     }
